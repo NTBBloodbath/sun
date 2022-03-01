@@ -16,10 +16,24 @@ LLVMValueRef sun_cg_int(struct AST_node *node) {
     return LLVMConstReal(LLVMDoubleType(), node->int_value);
 }
 
+LLVMValueRef sun_cg(struct AST_node *node, LLVMModuleRef module, LLVMBuilderRef builder) {
+    // TODO: Make a more robust AST with typedefs and unions
+    // so I can actually finish this code with easiness
+    // switch (node->type) {
+    // }
+    return NULL;
+}
+
+/*
+ * @brief Generate a LLVM value for a binary expression AST
+ *
+ * @param node [in] The AST node
+ * @return LLVM value reference
+ */
 LLVMValueRef sun_cg_bin_expr(struct AST_node *node, LLVMModuleRef module, LLVMBuilderRef builder) {
     // Evaluate lhs and rhs values
-    LLVMValueRef lhs = sun_cg(node, module, builder);
-    LLVMValueRef rhs = sun_cg(node, module, builder);
+    LLVMValueRef lhs = sun_cg(node->left, module, builder);
+    LLVMValueRef rhs = sun_cg(node->right, module, builder);
 
     if (lhs == NULL || rhs == NULL) {
         return NULL;
@@ -41,13 +55,5 @@ LLVMValueRef sun_cg_bin_expr(struct AST_node *node, LLVMModuleRef module, LLVMBu
         }
     }
 
-    return NULL;
-}
-
-LLVMValueRef sun_cg(struct AST_node *node, LLVMModuleRef module, LLVMBuilderRef builder) {
-    // TODO: Make a more robust AST with typedefs and unions
-    // so I can actually finish this code with easiness
-    // switch (node->type) {
-    // }
     return NULL;
 }
