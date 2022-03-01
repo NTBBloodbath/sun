@@ -1,0 +1,17 @@
+@document.meta
+  title: README
+  description: Sun programming language README
+  authors: NTBBloodbath
+  categories: sun, programming language
+  created: 2022-03-01
+  version: 0.0.11
+@end
+
+* Sun programming language
+
+ ** Building from source
+
+  *** Requirements
+      - GCC +5.1 / Clang
+      - LLVM
+      - GNU Make

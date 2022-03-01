@@ -7,7 +7,7 @@
 # Build macros
 # ============
 CC      = gcc
-CFLAGS  = -O3 -Wall -Wextra -std=c99
+CFLAGS  = -O3 -Wall -Wextra -std=c11
 LDFLAGS =
 INCLUDE =
 
