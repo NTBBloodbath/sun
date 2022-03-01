@@ -1,0 +1,77 @@
+@document.meta
+  title: Sun specs
+  description: Sun programming language specs
+  authors: NTBBloodbath
+  categories: programming language specs
+  created: 2022-02-07
+  version: 0.0.9
+@end
+
+* Sun programming language
+  The Sun programming language is heavily inspired by C, Lua and Python.
+  
+  Sun programming language syntax is meant to be simple, easy and enjoyable.
+  Sun programming language syntax follows common styles, that means brackets
+  for code blocks instead of indentation-based blocks or `then/do ... end`.
+
+  Sun programming language is a C-based compiled language with a self-compiled
+  compiler. That means Sun can compile itself.
+
+  Sun programming language is a statically-typed language, that means everything
+  has a type and needs to be declared during compile-time.
+
+ ** Sun syntax
+    As said before, Sun syntax is meant to be simple, easy and enjoyable so Sun
+    keeps a very familiar syntax with other languages like C.
+
+  *** Comments
+      Sun comments syntax is heavily inspired by languages like C.
+
+@code c
+  // This is a single-line comment!
+  /* This is a multi-line comment
+      Nested multi-line comments are not allowed!
+  */
+@end
+
+   **** Documentation comments
+        This is a special comment type meant to be used to document your code.
+
+
+  *** Variables
+
+  *** Conditionals
+      As an ex-rubyist I love have multiple conditional kinds, that means Sun
+      is going to have not only `if/else` statements but also `unless` statements.
+
+      Conditionals syntax is the following:
+
+@code
+// if/else workflow
+let age: i32 = 25;
+if age <= 18 {
+  println("What are you doing? Go out!");
+}
+
+// unless workflow
+unless age >= 18 {
+  println("What are you doing? Go out!");
+}
+@end
+
+  *** Functions
+
+@code c
+int fib(x: int) {
+    if x < 2 {
+        return x;
+    }
+    return fib(x - 1) + fib(x - 2);
+    // Can be also done with ternary operators
+    // return x < 2 ? x : fib(x - 1) + fib(x - 2);
+}
+@end
+
+
+#comment
+vim: sw=2:ts=2:sts=2:cole=2:cocu=n:
