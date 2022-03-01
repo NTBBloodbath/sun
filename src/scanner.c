@@ -59,7 +59,7 @@ static int skip_whitespace() {
  *
  * @param str [in] String to check character position
  * @param ch [in] Character to be looked for
- * @return Character position or 1 if character was not found
+ * @return Character position or -1 if character was not found
  */
 static int ch_pos(char *str, int ch) {
     char *pos = strchr(str, ch);
