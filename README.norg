@@ -12,6 +12,6 @@
  ** Building from source
 
   *** Requirements
-      - GCC +5.1 / Clang
+      - GCC +8.1 / Clang +7.0
       - LLVM
       - GNU Make
