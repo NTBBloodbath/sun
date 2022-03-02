@@ -3,29 +3,28 @@
 
 #include "ast.h"
 
-// List of AST operators
-// static char *AST_op[] = { "+", "-", "*", "/" };
-
-int interpret_ast(struct AST_node *ast) {
+int interpret_ast(struct AST_node *node) {
     int lhs = 0;
     int rhs = 0;
 
     // Get the left and right sub-tree values
-    if (ast->left) {
-        lhs = interpret_ast(ast->left);
+    if (node->lhs) {
+        lhs = interpret_ast(node->lhs);
     }
-    if (ast->right) {
-        rhs = interpret_ast(ast->right);
+    if (node->rhs) {
+        rhs = interpret_ast(node->rhs);
     }
 
     // DEBUG: Print what we are about to do
-    /* if (ast->op == A_INT) {
-        printf("int %d\n", ast->int_value);
+    // List of AST operators
+    /* static char *AST_op[] = { "+", "-", "*", "/" };
+    if (node->op == A_INT) {
+        printf("int %d\n", node->int_value);
     } else {
-        printf("%d %s %d\n", lhs, AST_op[ast->op], rhs);
+        printf("%d %s %d\n", lhs, AST_op[node->op], rhs);
     } */
 
-    switch (ast->op) {
+    switch (node->op) {
         case A_ADD:
             return (lhs + rhs);
         case A_MINUS:
@@ -35,9 +34,9 @@ int interpret_ast(struct AST_node *ast) {
         case A_DIVIDE:
             return (lhs / rhs);
         case A_INT:
-            return (ast->int_value);
+            return (node->int_value);
         default:
-            fprintf(stderr, "Unknown AST operator %d\n", ast->op);
+            fprintf(stderr, "Unknown AST operator %d\n", node->op);
             exit(1);
     }
     return 1;

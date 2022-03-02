@@ -17,9 +17,6 @@ EXTRA_LDFLAGS = -Wl,--gc-sections
 # Include $(INCLUDE) into $(CFLAGS) for compilation linking
 CFLAGS += $(INCLUDE)
 
-LLVM_CC_FLAGS   = `llvm-config --cflags`
-LLVM_LINK_FLAGS = `llvm-config --libs --cflags --ldflags all`
-
 # Files and Directories
 # =====================
 # Directories
@@ -43,7 +40,7 @@ OBJS      = $(addprefix $(BUILD_OBJ_DIR)/,$(notdir $(addsuffix .o, $(basename $(
 objs: $(OBJS)
 
 $(BUILD_OBJ_DIR)/%.o:$(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LLVM_CC_FLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $< -o $@
 
 all: sun
 
@@ -52,7 +49,7 @@ setup_dirs:
 	if [ ! -d "$(BUILD_OBJ_DIR)" ]; then mkdir -p "$(BUILD_OBJ_DIR)"; fi
 
 sun: setup_dirs $(OBJS)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(LLVM_LINK_FLAGS) $(OBJS) -o $(BUILD_BIN_DIR)/sun
+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJS) -o $(BUILD_BIN_DIR)/sun
 	@echo
 	@echo "Produced Sun binary is located at '$(BUILD_BIN_DIR)/sun'"
 

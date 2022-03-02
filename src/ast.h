@@ -3,8 +3,8 @@
 
 struct AST_node {
     int op;
-    struct AST_node *left;
-    struct AST_node *right;
+    struct AST_node *lhs;
+    struct AST_node *rhs;
     int int_value;
 };
 

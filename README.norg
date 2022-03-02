@@ -13,5 +13,4 @@
 
   *** Requirements
       - GCC +8.1 / Clang +7.0
-      - LLVM
       - GNU Make
