@@ -91,7 +91,7 @@ struct AST_node *bin_expr(int prev_token_prec) {
 
     token_type = Token.token;
     // If no tokens left, return just the left node
-    if (token_type == T_EOF) {
+    if (token_type == T_SEMI) {
         return lhs;
     }
 
@@ -110,7 +110,7 @@ struct AST_node *bin_expr(int prev_token_prec) {
 
         // Update our current token and return just the left node if no more tokens left
         token_type = Token.token;
-        if (token_type == T_EOF) {
+        if (token_type == T_SEMI) {
             return lhs;
         }
     }

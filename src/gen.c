@@ -40,6 +40,36 @@ int gen_ast(struct AST_node *node) {
     exit(1);
 }
 
+/**
+ * @brief Call cg_preamble()
+ */
+void gen_preamble() {
+    cg_preamble();
+}
+
+/**
+ * @brief Call cg_postamble()
+ */
+void gen_postamble() {
+    cg_postamble();
+}
+
+/**
+ * @brief Call free_all_registers()
+ */
+void gen_free_registers() {
+    free_all_registers();
+}
+
+/**
+ * @brief Call cg_printint(int r)
+ *
+ * @param reg [in] Number of the register
+ */
+void gen_printint(int reg) {
+    cg_printint(reg);
+}
+
 void gen_code(struct AST_node *node) {
     int reg;
 

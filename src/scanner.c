@@ -84,6 +84,65 @@ static int scan_int(int c) {
 }
 
 /**
+ * @brief Scan an identifier from the input file and store it
+ *
+ * @param c [in] Current character
+ * @param buf [in] Buffer to store the identifier
+ * @param limit [in] Identifier length limit
+ * @return Identifier length
+ */
+static int scan_identifier(int c, char *buf, int limit) {
+    int i = 0;
+
+    // Allowed characters for declaring identifiers:
+    // - Digits
+    // - Alpha
+    // - Underscores
+    while (isdigit(c) || isalpha(c) || c == '_') {
+        // Raise an error if we hit the identifier length limit
+        // and append it to buf and get next character otherwise
+        if (limit - 1 == i) {
+            fprintf(stderr, "Identifier too long on line %d\n", curr_line);
+            exit(1);
+        } else if (i < limit - 1) {
+            buf[i++] = c;
+        }
+        c = look_ahead();
+    }
+
+    // Put a character back once we hit a non-valid one
+    go_back = c;
+    // Null-terminate the buf and return its length
+    buf[i] = '\0';
+    return i;
+}
+
+/**
+ * @brief Scan given word and look for a matching keyword on it
+ *
+ * @param str [in] Word to check if it's a keyword
+ * @return Matching token number or 0 if word is not a keyword
+ */
+static int scan_keyword(char *str) {
+    // Code extracted from SubC compiler, this code has optimizations.
+    // These optimizations are the following:
+    //
+    // Matches against the first letter before doing the 'strcmp()',
+    // this speeds up the comparison against dozens of keywords.
+    //
+    // NOTE: This is going to be useful in the future.
+    switch (*str) {
+        case 'p':
+            if (!strcmp(str, "print")) {
+                return T_PRINT;
+            }
+        break;
+    }
+
+    return 0;
+}
+
+/**
  * @brief Scan and return the next token in the input file
  *
  * @param t [in] Token structure
@@ -91,6 +150,8 @@ static int scan_int(int c) {
  */
 int scan(struct token *t) {
     int c = skip_whitespace();
+    int token_kind;
+
     switch(c) {
         case EOF:
             t->token = T_EOF;
@@ -107,16 +168,32 @@ int scan(struct token *t) {
         case '/':
             t->token = T_SLASH;
             break;
+        case ';':
+            t->token = T_SEMI;
+            break;
         default:
             // Scan int literals
             if (isdigit(c)) {
                 t->token = T_INT;
                 t->int_value = scan_int(c);
                 break;
+            } else if (isalpha(c) || c == '_') {
+                // Read in a keyword or identifier
+                scan_identifier(c, Text, TEXTLEN);
+
+                // If it's a recognized keyword, return its token
+                if ((token_kind = scan_keyword(Text))) {
+                    t->token = token_kind;
+                    break;
+                }
+
+                // Not a recognized keyword nor identifier, raise an error
+                fprintf(stderr, "Unrecognized symbol '%s' on line '%d'\n", Text, curr_line);
+                exit(1);
             }
 
             // Raise an Unexpected token error
-            printf("Unexpected token '%d' on line '%d'\n", c, curr_line);
+            fprintf(stderr, "Unexpected token '%d' on line '%d'\n", c, curr_line);
             exit(1);
     }
 

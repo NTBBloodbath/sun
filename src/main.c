@@ -9,6 +9,7 @@
 #include "cli.h"
 #include "ast.h"
 #include "gen.h"
+#include "stmt.h"
 #include "scanner.h"
 #include "tokenizer.h"
 
@@ -18,8 +19,6 @@ static void init_compiler() {
 }
 
 int main (int argc, char *argv[]) {
-    struct AST_node *node;
-
     if (argc != 2) {
         help();
         exit(1);
@@ -41,11 +40,17 @@ int main (int argc, char *argv[]) {
         exit(1);
     }
 
+    // Get the first token from input file
     scan(&Token);
-    node = bin_expr(0);
-
+    // Set preamble in output file
+    gen_preamble();
+    // Parse statements in input file
+    statements();
+    // Set postamble in output file
+    gen_postamble();
+    // Close input/output file
     fclose(sun_file);
-    gen_code(node);
+    fclose(sun_out_file);
 
     exit(0);
 }

@@ -1,6 +1,8 @@
 #ifndef SUN_CODEGEN_H
 #define SUN_CODEGEN_H
 
+void free_all_registers(void);
+
 void cg_preamble(void);
 void cg_postamble(void);
 void cg_printint(int r);
