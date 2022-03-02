@@ -36,7 +36,7 @@ int main (int argc, char *argv[]) {
     scan(&Token);
     node = bin_expr();
 
-    printf("%d\n", interpret_ast(node));
+    printf("%d\n", gen_ast(node));
     fclose(sun_file);
 
     exit(0);
