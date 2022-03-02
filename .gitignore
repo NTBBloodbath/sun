@@ -1,2 +1,7 @@
+# Build artifacts
 build/
+out.s
+out
+
+# Local testing files
 file.sun

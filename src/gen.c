@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "ast.h"
+#include "codegen.h"
 
 /**
  * @brief Generate Assembly code recursively from given AST
@@ -23,18 +24,31 @@ int gen_ast(struct AST_node *node) {
 
     switch (node->op) {
         case A_ADD:
-            return (l_reg + r_reg);
+            return cg_add(l_reg, r_reg);
         case A_MINUS:
-          return (l_reg - r_reg);
+          return cg_sub(l_reg, r_reg);
         case A_MULTIPLY:
-            return (l_reg * r_reg);
+            return cg_mul(l_reg, r_reg);
         case A_DIVIDE:
-            return (l_reg / r_reg);
+            return cg_div(l_reg, r_reg);
         case A_INT:
-            return (node->int_value);
+            return cg_load(node->int_value);
         default:
             fprintf(stderr, "Unknown AST operator %d\n", node->op);
             exit(1);
     }
     exit(1);
+}
+
+void gen_code(struct AST_node *node) {
+    int reg;
+
+    // Set the start of our ASM code (setting global, functions, etc)
+    cg_preamble();
+    // Get the register from our generated ASM
+    reg = gen_ast(node);
+    // Print the register with the result as an integer
+    cg_printint(reg);
+    // Set the end of our ASM code (return code)
+    cg_postamble();
 }

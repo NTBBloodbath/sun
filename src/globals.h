@@ -10,4 +10,5 @@ extern_ int curr_line;
 extern_ int go_back;
 extern_ struct token Token;
 extern_ FILE *sun_file;
+extern_ FILE *sun_out_file;
 #endif
