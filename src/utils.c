@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "scanner.h"
 #include "globals.h"
+#include "scanner.h"
 
 /**
  * @brief Check that the current token is t and fetch the next token, throw an error if not
@@ -22,20 +22,14 @@ void match(int t, char *str) {
 /**
  * @brief Match a semicolon and fetch the next token
  */
-void semi() {
-    match(T_SEMI, ";");
-}
+void semi() { match(T_SEMI, ";"); }
 
 /**
  * @brief Match a colon and fetch the next token
  */
-void colon() {
-    match(T_COLON, ":");
-}
+void colon() { match(T_COLON, ":"); }
 
 /**
  * @brief Match an identifier and fetch the next token
  */
-void identifier() {
-    match(T_IDENTIFIER, "identifier");
-}
+void identifier() { match(T_IDENTIFIER, "identifier"); }

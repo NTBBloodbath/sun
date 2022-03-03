@@ -1,11 +1,11 @@
 #include "ast.h"
 #include "gen.h"
+#include "globals.h"
+#include "scanner.h"
 #include "sym.h"
 #include "token.h"
-#include "utils.h"
-#include "scanner.h"
-#include "globals.h"
 #include "tokenizer.h"
+#include "utils.h"
 
 /**
  * @brief Declare a variable and save it into the global scope

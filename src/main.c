@@ -1,16 +1,16 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #define extern_
 #include "globals.h"
 #undef extern_
-#include "cli.h"
 #include "ast.h"
+#include "cli.h"
 #include "gen.h"
-#include "stmt.h"
 #include "scanner.h"
+#include "stmt.h"
 #include "tokenizer.h"
 
 static void init_compiler() {
@@ -18,7 +18,7 @@ static void init_compiler() {
     go_back = '\n';
 }
 
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 2) {
         help();
         exit(1);

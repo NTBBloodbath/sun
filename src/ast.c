@@ -8,7 +8,7 @@
  * @param lhs [in] The lhs AST node
  * @param rhs [in] The rhs AST node
  * @param int_value [in] An integer literal value
- * @return 
+ * @return
  */
 struct AST_node *make_ast_node(int op, struct AST_node *lhs, struct AST_node *rhs, int int_value) {
     struct AST_node *node;

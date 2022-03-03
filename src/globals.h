@@ -1,11 +1,11 @@
 #ifndef SUN_DATA_H
 #define SUN_DATA_H
-#include <stdio.h>
-#include "token.h"
 #include "sym.h"
+#include "token.h"
+#include <stdio.h>
 
 #ifndef extern_
-    #define extern_ extern
+#define extern_ extern
 #endif
 
 #define NSYM 1024

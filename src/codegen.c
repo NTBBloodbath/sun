@@ -10,12 +10,12 @@ static int free_reg[4];
 /**
  * @brief Registers table
  */
-static char *reg_list[4] = { "%r8", "%r9", "%r10", "%r11" };
+static char *reg_list[4] = {"%r8", "%r9", "%r10", "%r11"};
 
 /**
  * @brief Registers table (8-bit)
  */
-static char *breg_list[4] = { "%r8b", "%r9b", "%r10b", "%r11b" };
+static char *breg_list[4] = {"%r8b", "%r9b", "%r10b", "%r11b"};
 
 /**
  * @brief Allocate a free register and die if no available registers
@@ -104,9 +104,7 @@ int cg_store_global(int reg, char *identifier) {
  *
  * @param sym [in] Symbol name
  */
-void cg_global_sym(char *sym) {
-    fprintf(sun_out_file, "\t.comm\t%s, 8, 8\n", sym);
-}
+void cg_global_sym(char *sym) { fprintf(sun_out_file, "\t.comm\t%s, 8, 8\n", sym); }
 
 /**
  * @brief Generate Assembly code for comparisons
@@ -141,9 +139,7 @@ static int cg_compare(int r1, int r2, char *kind) {
  * @param r2 [in] Second register
  * @return Number of the register with the result
  */
-int cg_equal(int r1, int r2) {
-    return cg_compare(r1, r2, "sete");
-}
+int cg_equal(int r1, int r2) { return cg_compare(r1, r2, "sete"); }
 
 /**
  * @brief Compare two registers and check if they are not equal
@@ -152,9 +148,7 @@ int cg_equal(int r1, int r2) {
  * @param r2 [in] Second register
  * @return Number of the register with the result
  */
-int cg_not_equal(int r1, int r2) {
-    return cg_compare(r1, r2, "setne");
-}
+int cg_not_equal(int r1, int r2) { return cg_compare(r1, r2, "setne"); }
 
 /**
  * @brief Compare two registers and check if first if less than second
@@ -163,9 +157,7 @@ int cg_not_equal(int r1, int r2) {
  * @param r2 [in] Second register
  * @return Number of the register with the result
  */
-int cg_less_than(int r1, int r2) {
-    return cg_compare(r1, r2, "setl");
-}
+int cg_less_than(int r1, int r2) { return cg_compare(r1, r2, "setl"); }
 
 /**
  * @brief Compare two registers and check if first if less or equal than second
@@ -174,9 +166,7 @@ int cg_less_than(int r1, int r2) {
  * @param r2 [in] Second register
  * @return Number of the register with the result
  */
-int cg_less_equal(int r1, int r2) {
-    return cg_compare(r1, r2, "setle");
-}
+int cg_less_equal(int r1, int r2) { return cg_compare(r1, r2, "setle"); }
 
 /**
  * @brief Compare two registers and check if first if greater than second
@@ -185,9 +175,7 @@ int cg_less_equal(int r1, int r2) {
  * @param r2 [in] Second register
  * @return Number of the register with the result
  */
-int cg_greater_than(int r1, int r2) {
-    return cg_compare(r1, r2, "setg");
-}
+int cg_greater_than(int r1, int r2) { return cg_compare(r1, r2, "setg"); }
 
 /**
  * @brief Compare two registers and check if first if greater or equal than second
@@ -196,9 +184,7 @@ int cg_greater_than(int r1, int r2) {
  * @param r2 [in] Second register
  * @return Number of the register with the result
  */
-int cg_greater_equal(int r1, int r2) {
-    return cg_compare(r1, r2, "setge");
-}
+int cg_greater_equal(int r1, int r2) { return cg_compare(r1, r2, "setge"); }
 
 /**
  * @brief Add two registers together
@@ -262,31 +248,30 @@ void cg_preamble() {
     // Make all registers available
     free_all_registers();
     // Set our functions and declare main as the global
-    fputs(
-        ".LC0:\n"
-	    "\t.string\t\"%d\\n\"\n"
-	    "\t.globl\tmain\n"
-	    "\t.type\tmain, @function\n"
-        "\n"
-        ".text\n"
-	    "printint:\n"
-	    "\tpushq\t%rbp\n"
-	    "\tmovq\t%rsp, %rbp\n"
-	    "\tsubq\t$16, %rsp\n"
-	    "\tmovl\t%edi, -4(%rbp)\n"
-	    "\tmovl\t-4(%rbp), %eax\n"
-	    "\tmovl\t%eax, %esi\n"
-	    "\tleaq	.LC0(%rip), %rdi\n"
-	    "\tmovl	$0, %eax\n"
-	    "\tcall	printf@PLT\n"
-	    "\tnop\n"
-	    "\tleave\n"
-	    "\tret\n"
-	    "\n"
-	    "main:\n"
-	    "\tpushq\t%rbp\n"
-	    "\tmovq	%rsp, %rbp\n",
-    sun_out_file);
+    fputs(".LC0:\n"
+          "\t.string\t\"%d\\n\"\n"
+          "\t.globl\tmain\n"
+          "\t.type\tmain, @function\n"
+          "\n"
+          ".text\n"
+          "printint:\n"
+          "\tpushq\t%rbp\n"
+          "\tmovq\t%rsp, %rbp\n"
+          "\tsubq\t$16, %rsp\n"
+          "\tmovl\t%edi, -4(%rbp)\n"
+          "\tmovl\t-4(%rbp), %eax\n"
+          "\tmovl\t%eax, %esi\n"
+          "\tleaq	.LC0(%rip), %rdi\n"
+          "\tmovl	$0, %eax\n"
+          "\tcall	printf@PLT\n"
+          "\tnop\n"
+          "\tleave\n"
+          "\tret\n"
+          "\n"
+          "main:\n"
+          "\tpushq\t%rbp\n"
+          "\tmovq	%rsp, %rbp\n",
+          sun_out_file);
 }
 
 /**
@@ -294,11 +279,10 @@ void cg_preamble() {
  */
 void cg_postamble() {
     // Set our return code
-    fputs(
-        "\tmovl $0, %eax\n"
-        "\tpopq %rbp\n"
-        "\tret\n",
-    sun_out_file);
+    fputs("\tmovl $0, %eax\n"
+          "\tpopq %rbp\n"
+          "\tret\n",
+          sun_out_file);
 }
 
 /**

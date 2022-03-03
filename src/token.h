@@ -15,7 +15,7 @@ struct token {
 };
 
 enum {
-    T_EOF,        // EOF
+    T_EOF, // EOF
     // ARITHMETIC
     T_PLUS,       // +
     T_MINUS,      // -
@@ -33,8 +33,8 @@ enum {
     T_ASSIGN,     // =
     T_IDENTIFIER, // hello
     // KEYWORDS
-    T_PRINT,      // print
-    T_LET,        // let
-    T_INT,        // int
+    T_PRINT, // print
+    T_LET,   // let
+    T_INT,   // int
 };
 #endif

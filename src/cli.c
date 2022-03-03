@@ -8,6 +8,4 @@ void version() {
     exit(0);
 }
 
-void help() {
-    fprintf(stderr, "Usage: sun file.sun\n");
-}
+void help() { fprintf(stderr, "Usage: sun file.sun\n"); }

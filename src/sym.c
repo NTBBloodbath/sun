@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "sym.h"
 #include "globals.h"
+#include "sym.h"
 
 // Position of next free global symbol slot
 static int Globs = 0;
