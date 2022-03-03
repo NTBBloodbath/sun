@@ -1,0 +1,10 @@
+let x: int;
+x = 5;
+
+let y: int;
+y = 3;
+
+let z: int = 2;
+
+print x + y;
+print x + y + z;
