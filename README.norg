@@ -8,9 +8,18 @@
 @end
 
 * Sun programming language
+  Sun is a strongly-typed compiled programming language heavily inspired by C, Rust, Lua and Python.
+
+  Sun programming language source code /and compiler/ are written in C, following C18 standard.
+
+  It is in a pretty barebones stage, however if you want to take a look at the specifications for it
+  you can go {./specs.norg}[here]. You can also take a look at some tests made to test current features
+  in {./tests}[tests] directory.
 
  ** Building from source
-
   *** Requirements
       - GCC +8.1 / Clang +7.0
       - GNU Make
+
+ ** License
+    Sun is licensed under {./LICENSE}[MIT] license.

@@ -8,7 +8,7 @@
 @end
 
 * Sun programming language
-  The Sun programming language is heavily inspired by C, Lua and Python.
+  The Sun programming language is heavily inspired by C, Rust, Lua and Python.
   
   Sun programming language syntax is meant to be simple, easy and enjoyable.
   Sun programming language syntax follows common styles, that means brackets
@@ -19,6 +19,8 @@
 
   Sun programming language is a statically-typed language, that means everything
   has a type and needs to be declared during compile-time.
+
+  > *NOTE:* Sun programming language compiler makes use of latest C standard (C18).
 
  ** Sun syntax
     As said before, Sun syntax is meant to be simple, easy and enjoyable so Sun
