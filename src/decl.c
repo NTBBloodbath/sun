@@ -32,9 +32,7 @@ void var_declaration() {
         struct AST_node *lhs, *rhs, *tree;
         // Get the global variable identifier (name)
         char *var_name = Gsym[var_slot].name;
-
         int id = find_glob(var_name);
-        printf("'%s' variable id is %d\n", var_name, id);
 
         rhs = make_ast_leaf(A_LVIDENT, id);
         lhs = bin_expr(0);
