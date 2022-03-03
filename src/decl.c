@@ -26,7 +26,7 @@ void var_declaration() {
     match(T_INT, "int");
 
     // If we have found EQ token then let's also declare the variable value
-    if (Token.token == T_EQ) {
+    if (Token.token == T_ASSIGN) {
         scan(&Token);
 
         struct AST_node *lhs, *rhs, *tree;

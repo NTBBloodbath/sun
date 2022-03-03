@@ -111,7 +111,7 @@ static int scan_identifier(int c, char *buf, int limit) {
     }
 
     // Put a character back once we hit a non-valid one
-    go_back = c;
+    look_behind(c);
     // Null-terminate the buf and return its length
     buf[i] = '\0';
     return i;
@@ -180,7 +180,36 @@ int scan(struct token *t) {
             t->token = T_SLASH;
             break;
         case '=':
-            t->token = T_EQ;
+            if ((c = look_ahead()) == '=') {
+                t->token = T_EQ;
+            } else {
+                look_behind(c);
+                t->token = T_ASSIGN;
+            }
+            break;
+        case '!':
+            if ((c = look_ahead()) == '=') {
+                t->token = T_NE;
+            } else {
+                fprintf(stderr, "Unrecognized character '%c' on line %d\n", c, curr_line);
+                exit(1);
+            }
+            break;
+        case '<':
+            if ((c = look_ahead()) == '=') {
+                t->token = T_LE;
+            } else {
+                look_behind(c);
+                t->token = T_LT;
+            }
+            break;
+        case '>':
+            if ((c = look_ahead()) == '=') {
+                t->token = T_GE;
+            } else {
+                look_behind(c);
+                t->token = T_GT;
+            }
             break;
         case ':':
             t->token = T_COLON;

@@ -43,7 +43,7 @@ void assignment_statement(void) {
     rhs = make_ast_leaf(A_LVIDENT, id);
 
     // Ensure we have an equals sign
-    match(T_EQ, "=");
+    match(T_ASSIGN, "=");
 
     // Parse the following expression
     lhs = bin_expr(0);

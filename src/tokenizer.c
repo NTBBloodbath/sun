@@ -12,11 +12,16 @@
  */
 static int op_prec[] = {
     0,  // EOF
-    10, // +
+    10, // + 
     10, // -
     20, // *
     20, // /
-    0,  // 10 (int)
+    30, // ==
+    30, // !=
+    40, // <
+    40, // <=
+    40, // >
+    40, // >=
 };
 
 /**
@@ -42,19 +47,11 @@ static int op_precedence(int token_kind) {
  * @return AST operation
  */
 int arithmetic_op(int token) {
-    switch (token) {
-        case T_PLUS:
-            return A_ADD;
-        case T_MINUS:
-            return A_MINUS;
-        case T_STAR:
-            return A_MULTIPLY;
-        case T_SLASH:
-            return A_DIVIDE;
-        default:
-            fprintf(stderr, "Unknown token '%d' in 'arithmetic_op' on line %d\n", token, curr_line);
-            exit(1);
+    if (token > T_EOF && token < T_INTEGER) {
+        return token;
     }
+    fprintf(stderr, "Unknown token '%d' in 'arithmetic_op' on line %d\n", token, curr_line);
+    exit(1);
 }
 
 /**
@@ -69,8 +66,7 @@ static struct AST_node *primary() {
     switch (Token.token) {
         case T_INTEGER:
             node = make_ast_leaf(A_INTEGER, Token.int_value);
-            scan(&Token);
-            return node;
+            break;
         case T_IDENTIFIER:
             if ((id = find_glob(Text)) == -1) {
                 fprintf(stderr, "Unknown variable '%s' on line %d\n", Text, curr_line);
@@ -114,7 +110,7 @@ struct AST_node *bin_expr(int prev_token_prec) {
         // Fetch in the next integer literal
         scan(&Token);
 
-        // Make a sub-tree ith the precedence of our current token
+        // Make a sub-tree with the precedence of our current token
         rhs = bin_expr(op_prec[token_type]);
 
         // Join our sub-tree with our tree and convert the token into an AST operation

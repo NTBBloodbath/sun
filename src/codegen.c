@@ -13,6 +13,11 @@ static int free_reg[4];
 static char *reg_list[4] = { "%r8", "%r9", "%r10", "%r11" };
 
 /**
+ * @brief Registers table (8-bit)
+ */
+static char *breg_list[4] = { "%r8b", "%r9b", "%r10b", "%r11b" };
+
+/**
  * @brief Allocate a free register and die if no available registers
  *
  * @return Number of the register
@@ -101,6 +106,98 @@ int cg_store_global(int reg, char *identifier) {
  */
 void cg_global_sym(char *sym) {
     fprintf(sun_out_file, "\t.comm\t%s, 8, 8\n", sym);
+}
+
+/**
+ * @brief Generate Assembly code for comparisons
+ *
+ * @param r1 [in] First register
+ * @param r2 [in,out] Second register
+ * @param kind [in] Comparison kind
+ * @return Number of the register with the result
+ */
+static int cg_compare(int r1, int r2, char *kind) {
+    // kind can be any setX instruction, that means it accepts:
+    // - sete  (==)
+    // - setne (!=)
+    // - setl  (< )
+    // - setle (<=)
+    // - setg  (> )
+    // - setge (>=)
+    //
+    // NOTE: 'cmpq r2 r1' is actually 'r1 - r2'
+    fprintf(sun_out_file, "\tcmpq\t%s, %s\n", reg_list[r2], reg_list[r1]);
+    fprintf(sun_out_file, "\t%s\t%s\n", kind, breg_list[r2]);
+    fprintf(sun_out_file, "\tandq\t$255, %s\n", reg_list[r2]);
+    free_register(r1);
+
+    return r2;
+}
+
+/**
+ * @brief Compare two registers and check if they are equal
+ *
+ * @param r1 [in] First register
+ * @param r2 [in] Second register
+ * @return Number of the register with the result
+ */
+int cg_equal(int r1, int r2) {
+    return cg_compare(r1, r2, "sete");
+}
+
+/**
+ * @brief Compare two registers and check if they are not equal
+ *
+ * @param r1 [in] First register
+ * @param r2 [in] Second register
+ * @return Number of the register with the result
+ */
+int cg_not_equal(int r1, int r2) {
+    return cg_compare(r1, r2, "setne");
+}
+
+/**
+ * @brief Compare two registers and check if first if less than second
+ *
+ * @param r1 [in] First register
+ * @param r2 [in] Second register
+ * @return Number of the register with the result
+ */
+int cg_less_than(int r1, int r2) {
+    return cg_compare(r1, r2, "setl");
+}
+
+/**
+ * @brief Compare two registers and check if first if less or equal than second
+ *
+ * @param r1 [in] First register
+ * @param r2 [in] Second register
+ * @return Number of the register with the result
+ */
+int cg_less_equal(int r1, int r2) {
+    return cg_compare(r1, r2, "setle");
+}
+
+/**
+ * @brief Compare two registers and check if first if greater than second
+ *
+ * @param r1 [in] First register
+ * @param r2 [in] Second register
+ * @return Number of the register with the result
+ */
+int cg_greater_than(int r1, int r2) {
+    return cg_compare(r1, r2, "setg");
+}
+
+/**
+ * @brief Compare two registers and check if first if greater or equal than second
+ *
+ * @param r1 [in] First register
+ * @param r2 [in] Second register
+ * @return Number of the register with the result
+ */
+int cg_greater_equal(int r1, int r2) {
+    return cg_compare(r1, r2, "setge");
 }
 
 /**

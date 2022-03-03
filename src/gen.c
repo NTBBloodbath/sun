@@ -33,6 +33,18 @@ int gen_ast(struct AST_node *node, int reg) {
             return cg_mul(l_reg, r_reg);
         case A_DIVIDE:
             return cg_div(l_reg, r_reg);
+        case A_EQ:
+            return cg_equal(l_reg, r_reg);
+        case A_NE:
+            return cg_not_equal(l_reg, r_reg);
+        case A_LT:
+            return cg_less_than(l_reg, r_reg);
+        case A_LE:
+            return cg_less_equal(l_reg, r_reg);
+        case A_GT:
+            return cg_greater_than(l_reg, r_reg);
+        case A_GE:
+            return cg_greater_equal(l_reg, r_reg);
         case A_INTEGER:
             return cg_load_int(node->value.int_value);
         case A_IDENTIFIER:

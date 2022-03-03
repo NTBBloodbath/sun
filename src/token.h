@@ -21,10 +21,16 @@ enum {
     T_MINUS,      // -
     T_STAR,       // *
     T_SLASH,      // /
-    T_COLON,      // :
-    T_EQ,         // =
-    T_SEMI,       // ;
+    T_EQ,         // ==
+    T_NE,         // !=
+    T_LT,         // <
+    T_GT,         // >
+    T_LE,         // <=
+    T_GE,         // >=
     T_INTEGER,    // 10
+    T_SEMI,       // ;
+    T_COLON,      // :
+    T_ASSIGN,     // =
     T_IDENTIFIER, // hello
     // KEYWORDS
     T_PRINT,      // print

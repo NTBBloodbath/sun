@@ -12,10 +12,16 @@ struct AST_node {
 };
 
 enum {
-    A_ADD,        // +
+    A_ADD = 1,    // +
     A_MINUS,      // -
     A_MULTIPLY,   // *
     A_DIVIDE,     // /
+    A_EQ,         // ==
+    A_NE,         // !=
+    A_LT,         // <
+    A_GT,         // >
+    A_LE,         // <=
+    A_GE,         // >=
     A_INTEGER,    // 10
     A_IDENTIFIER, // hello
     A_LVIDENT,    // left-hand side variable
