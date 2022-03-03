@@ -58,13 +58,49 @@ void free_all_registers() {
  * @param value [in] Integer literal to be loaded into a register
  * @return Number of the register
  */
-int cg_load(int value) {
+int cg_load_int(int value) {
     // Get a new register
     int reg = alloc_register();
 
-    // Print out the code to initialise it
+    // Print out the code to initialize it
     fprintf(sun_out_file, "\tmovq\t$%d, %s\n", value, reg_list[reg]);
     return reg;
+}
+
+/**
+ * @brief Load a global variable into a register
+ *
+ * @param identifier [in] The global variable name
+ * @return Number of the register
+ */
+int cg_load_global(char *identifier) {
+    // Get a new register
+    int reg = alloc_register();
+
+    // Print out the code to initialize it
+    fprintf(sun_out_file, "\tmovq\t%s(\%%rip), %s\n", identifier, reg_list[reg]);
+    return reg;
+}
+
+/**
+ * @brief Store a register's value into a global variable
+ *
+ * @param reg [in,out] Number of the register
+ * @param identifier [in] The global variable name
+ * @return Number of the register
+ */
+int cg_store_global(int reg, char *identifier) {
+    fprintf(sun_out_file, "\tmovq\t%s, %s(\%%rip)\n", reg_list[reg], identifier);
+    return reg;
+}
+
+/**
+ * @brief Generate a new global symbol
+ *
+ * @param sym [in] Symbol name
+ */
+void cg_global_sym(char *sym) {
+    fprintf(sun_out_file, "\t.comm\t%s, 8, 8\n", sym);
 }
 
 /**

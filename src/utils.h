@@ -3,4 +3,6 @@
 
 void match(int t, char *str);
 void semi(void);
+void colon(void);
+void identifier(void);
 #endif

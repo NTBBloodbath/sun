@@ -18,7 +18,7 @@ struct AST_node *make_ast_node(int op, struct AST_node *lhs, struct AST_node *rh
     node->op = op;
     node->lhs = lhs;
     node->rhs = rhs;
-    node->int_value = int_value;
+    node->value.int_value = int_value;
 
     return node;
 }

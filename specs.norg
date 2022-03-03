@@ -28,17 +28,39 @@
       Sun comments syntax is heavily inspired by languages like C.
 
 @code c
-  // This is a single-line comment!
-  /* This is a multi-line comment
-      Nested multi-line comments are not allowed!
-  */
+    // This is a single-line comment!
+    /* This is a multi-line comment
+        Nested multi-line comments are not allowed!
+    */
 @end
 
    **** Documentation comments
-        This is a special comment type meant to be used to document your code.
-
+        This is a special comment type meant to be used to document your code, WIP.
 
   *** Variables
+      Variables declaration syntax are highly inspired by Rust one.
+
+@code rust
+    let my_var: int = 5;
+@end
+
+      Variables follows this BNF notation:
+
+@code
+    statements: statement
+      |         statement statements
+      ;
+
+    statement: 'let' identifier ':' type ';'
+      |        'let' identifier ':' type '=' expression ';'
+      ;
+
+    identifier: T_IDENTIFIER
+      ;
+
+    type: T_INT
+      ;
+@end
 
   *** Conditionals
       As an ex-rubyist I love have multiple conditional kinds, that means Sun
@@ -46,17 +68,17 @@
 
       Conditionals syntax is the following:
 
-@code
-// if/else workflow
-let age: i32 = 25;
-if age <= 18 {
-  println("What are you doing? Go out!");
-}
+@code rust
+    // if/else workflow
+    let age: i32 = 25;
+    if age <= 18 {
+      println("What are you doing? Go out!");
+    }
 
-// unless workflow
-unless age >= 18 {
-  println("What are you doing? Go out!");
-}
+    // unless workflow
+    unless age >= 18 {
+      println("What are you doing? Go out!");
+    }
 @end
 
   *** Functions

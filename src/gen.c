@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 #include "ast.h"
+#include "sym.h"
+#include "globals.h"
 #include "codegen.h"
 
 /**
@@ -10,16 +12,16 @@
  * @param node [in] AST node
  * @return Assembly code
  */
-int gen_ast(struct AST_node *node) {
+int gen_ast(struct AST_node *node, int reg) {
     int l_reg = 0;
     int r_reg = 0;
 
     // Get the left and right sub-tree values
     if (node->lhs) {
-        l_reg = gen_ast(node->lhs);
+        l_reg = gen_ast(node->lhs, -1);
     }
     if (node->rhs) {
-        r_reg = gen_ast(node->rhs);
+        r_reg = gen_ast(node->rhs, l_reg);
     }
 
     switch (node->op) {
@@ -31,13 +33,28 @@ int gen_ast(struct AST_node *node) {
             return cg_mul(l_reg, r_reg);
         case A_DIVIDE:
             return cg_div(l_reg, r_reg);
-        case A_INT:
-            return cg_load(node->int_value);
+        case A_INTEGER:
+            return cg_load_int(node->value.int_value);
+        case A_IDENTIFIER:
+            return cg_load_global(Gsym[node->value.id].name);
+        case A_LVIDENT:
+            return cg_store_global(reg, Gsym[node->value.id].name);
+        case A_ASSIGN:
+            return r_reg;
         default:
             fprintf(stderr, "Unknown AST operator %d\n", node->op);
             exit(1);
     }
     exit(1);
+}
+
+/**
+ * @brief Call cg_global_sym(char *sym)
+ *
+ * @param sym [in] Symbol name
+ */
+void gen_global_sym(char *sym) {
+    cg_global_sym(sym);
 }
 
 /**
@@ -68,17 +85,4 @@ void gen_free_registers() {
  */
 void gen_printint(int reg) {
     cg_printint(reg);
-}
-
-void gen_code(struct AST_node *node) {
-    int reg;
-
-    // Set the start of our ASM code (setting global, functions, etc)
-    cg_preamble();
-    // Get the register from our generated ASM
-    reg = gen_ast(node);
-    // Print the register with the result as an integer
-    cg_printint(reg);
-    // Set the end of our ASM code (return code)
-    cg_postamble();
 }

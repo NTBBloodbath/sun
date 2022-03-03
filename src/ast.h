@@ -5,15 +5,21 @@ struct AST_node {
     int op;
     struct AST_node *lhs;
     struct AST_node *rhs;
-    int int_value;
+    union {
+        int id;        // Symbol slot number, A_IDENTIFIER
+        int int_value; // Integer value, A_INT
+    } value;
 };
 
 enum {
-    A_ADD,      // +
-    A_MINUS,    // -
-    A_MULTIPLY, // *
-    A_DIVIDE,   // /
-    A_INT,      // 10
+    A_ADD,        // +
+    A_MINUS,      // -
+    A_MULTIPLY,   // *
+    A_DIVIDE,     // /
+    A_INTEGER,    // 10
+    A_IDENTIFIER, // hello
+    A_LVIDENT,    // left-hand side variable
+    A_ASSIGN,     // =
 };
 
 

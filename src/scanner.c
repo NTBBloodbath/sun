@@ -136,6 +136,17 @@ static int scan_keyword(char *str) {
             if (!strcmp(str, "print")) {
                 return T_PRINT;
             }
+            break;
+        case 'l':
+            if (!strcmp(str, "let")) {
+                return T_LET;
+            }
+            break;
+        case 'i':
+            if (!strcmp(str, "int")) {
+                return T_INT;
+            }
+            break;
         break;
     }
 
@@ -168,13 +179,19 @@ int scan(struct token *t) {
         case '/':
             t->token = T_SLASH;
             break;
+        case '=':
+            t->token = T_EQ;
+            break;
+        case ':':
+            t->token = T_COLON;
+            break;
         case ';':
             t->token = T_SEMI;
             break;
         default:
             // Scan int literals
             if (isdigit(c)) {
-                t->token = T_INT;
+                t->token = T_INTEGER;
                 t->int_value = scan_int(c);
                 break;
             } else if (isalpha(c) || c == '_') {
@@ -187,9 +204,9 @@ int scan(struct token *t) {
                     break;
                 }
 
-                // Not a recognized keyword nor identifier, raise an error
-                fprintf(stderr, "Unrecognized symbol '%s' on line '%d'\n", Text, curr_line);
-                exit(1);
+                // Not a recognized keyword nor identifier, return an identifier
+                t->token = T_IDENTIFIER;
+                break;
             }
 
             // Raise an Unexpected token error

@@ -12,7 +12,7 @@
  */
 void match(int t, char *str) {
     if (Token.token != t) {
-        fprintf(stderr, "'%s' expected on line '%d'\n", str, curr_line);
+        fprintf(stderr, "'%s' expected on line '%d', got '%d'\n", str, curr_line, Token.token);
         exit(1);
     }
 
@@ -24,4 +24,18 @@ void match(int t, char *str) {
  */
 void semi() {
     match(T_SEMI, ";");
+}
+
+/**
+ * @brief Match a colon and fetch the next token
+ */
+void colon() {
+    match(T_COLON, ":");
+}
+
+/**
+ * @brief Match an identifier and fetch the next token
+ */
+void identifier() {
+    match(T_IDENTIFIER, "identifier");
 }

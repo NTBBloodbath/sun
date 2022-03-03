@@ -6,21 +6,29 @@
  */
 #define TEXTLEN 512
 
+/*
+ * @brief Token table
+ */
 struct token {
     int token;
     int int_value;
 };
 
 enum {
-    T_EOF,   // EOF
-    // ===== ARITHMETIC
-    T_PLUS,  // +
-    T_MINUS, // -
-    T_STAR,  // *
-    T_SLASH, // /
-    T_INT,   // 10
-    T_SEMI,  // ;
-    // ===== KEYWORDS
-    T_PRINT  // print
+    T_EOF,        // EOF
+    // ARITHMETIC
+    T_PLUS,       // +
+    T_MINUS,      // -
+    T_STAR,       // *
+    T_SLASH,      // /
+    T_COLON,      // :
+    T_EQ,         // =
+    T_SEMI,       // ;
+    T_INTEGER,    // 10
+    T_IDENTIFIER, // hello
+    // KEYWORDS
+    T_PRINT,      // print
+    T_LET,        // let
+    T_INT,        // int
 };
 #endif
