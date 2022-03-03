@@ -45,8 +45,13 @@ $(BUILD_OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 all: sun
 
 setup_dirs:
+ifeq ($(OS),Windows_NT)
+	pwsh -c 'if (!(Test-Path "$(BUILD_BIN_DIR)")) { mkdir "$(BUILD_BIN_DIR)" }'
+	pwsh -c 'if (!(Test-Path "$(BUILD_OBJ_DIR)")) { mkdir "$(BUILD_OBJ_DIR)" }'
+else
 	if [ ! -d "$(BUILD_BIN_DIR)" ]; then mkdir -p "$(BUILD_BIN_DIR)"; fi
 	if [ ! -d "$(BUILD_OBJ_DIR)" ]; then mkdir -p "$(BUILD_OBJ_DIR)"; fi
+endif
 
 sun: setup_dirs $(OBJS)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJS) -o $(BUILD_BIN_DIR)/sun
