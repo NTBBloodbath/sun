@@ -6,7 +6,7 @@
 
 # Build macros
 # ============
-CC      = gcc
+CC      = clang
 CFLAGS  = -O3 -Wall -Wextra -std=c18
 LDFLAGS =
 INCLUDE =
@@ -24,6 +24,13 @@ SRC_DIR       = $(CURDIR)/src
 BUILD_DIR     = $(CURDIR)/build
 BUILD_BIN_DIR = $(BUILD_DIR)/bin
 BUILD_OBJ_DIR = $(BUILD_DIR)/.objects
+
+# Output executable
+ifeq ($(OS), Windows_NT)
+	BUILD_BIN_PATH = $(BUILD_BIN_DIR)/sun.exe
+else
+	BUILD_BIN_PATH = $(BUILD_BIN_DIR)/sun
+endif
 
 # Files patterns
 SRC_FILES = .c
@@ -54,12 +61,17 @@ else
 endif
 
 sun: setup_dirs $(OBJS)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJS) -o $(BUILD_BIN_DIR)/sun
+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJS) -o $(BUILD_BIN_PATH)
 	@echo
-	@echo "Produced Sun binary is located at '$(BUILD_BIN_DIR)/sun'"
+	@echo "Produced Sun binary is located at '$(BUILD_BIN_PATH)'"
 
 clean:
-	rm -f $(OBJS) $(BUILD_BIN_DIR)/sun
+ifeq ($(OS),Windows_NT)
+	pwsh -c '"$(OBJS)".split(" ") | rm -fo'
+	pwsh -c 'rm "$(BUILD_BIN_PATH)"'
+else
+	rm -f $(OBJS) $(BUILD_BIN_PATH)
+endif
 
 rebuild: clean $(OBJS) sun
 
@@ -84,6 +96,7 @@ info:
 	echo "BUILD_DIR     : $(BUILD_DIR)"
 	echo "BUILD_OBJ_DIR : $(BUILD_OBJ_DIR)"
 	echo "BUILD_BIN_DIR : $(BUILD_BIN_DIR)"
+	echo "BUILD_BIN_PATH: $(BUILD_BIN_PATH)"
 	echo "SOURCES       : $(SOURCES)"
 	echo "HEADERS       : $(HEADERS)"
 	echo "OBJS          : $(OBJS)"
