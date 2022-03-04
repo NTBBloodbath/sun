@@ -12,7 +12,7 @@ LDFLAGS =
 INCLUDE =
 
 EXTRA_CFLAGS  = -fdata-sections -ffunction-sections
-EXTRA_LDFLAGS = -Wl,--gc-sections
+EXTRA_LDFLAGS = -Wl
 
 # Include $(INCLUDE) into $(CFLAGS) for compilation linking
 CFLAGS += $(INCLUDE)
