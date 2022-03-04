@@ -47,6 +47,6 @@ int add_glob(char *name) {
 
     // Get a new symbol slot and fill it then return the slot number
     slot_pos = new_glob();
-    Gsym[slot_pos].name = strdup(name);
+    Gsym[slot_pos].name = _strdup(name);
     return slot_pos;
 }

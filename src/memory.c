@@ -1,3 +1,7 @@
+// Microsoft has deprecated lots of calls which use buffers to improve code security.
+// Using this line to remove deprecation notice
+#define _CRT_SECURE_NO_DEPRECATE
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
