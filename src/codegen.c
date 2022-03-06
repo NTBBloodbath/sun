@@ -250,14 +250,8 @@ void cg_preamble() {
     // Set our functions and declare main as the global
     fputs(".LC0:\n"
           "\t.string\t\"%d\\n\"\n"
-          "\t.globl\tmain\n",
-          sun_out_file);
-#ifdef _WIN32
-    fputs("\t.def main; .scl    2; .type    32; .endef\n", sun_out_file);
-#elif __unix__
-    fputs("\t.type\tmain, @function\n", sun_out_file);
-#endif
-    fputs(
+          "\t.globl\tmain\n"
+          "\t.type\tmain, @function\n"
           "\n"
           ".text\n"
           "printint:\n"
@@ -268,16 +262,9 @@ void cg_preamble() {
           "\tmovl\t-4(%rbp), %eax\n"
           "\tmovl\t%eax, %esi\n"
           "\tleaq	.LC0(%rip), %rdi\n"
-          "\tmovl	$0, %eax\n",
-          sun_out_file);
-#ifdef _WIN32
-    fputs("\tpushq\t%eax\n"
-          "\tcall\tprintf\n"
-          "\tpop\t%ebx\n", sun_out_file);
-#elif __unix__
-    fputs("\tcall\tprintf@PLT\n", sun_out_file);
-#endif
-    fputs("\tnop\n"
+          "\tmov 	$0, %eax\n"
+          "\tcall\tprintf@PLT\n"
+          "\tnop\n"
           "\tleave\n"
           "\tret\n"
           "\n"

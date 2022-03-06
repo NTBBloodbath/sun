@@ -22,9 +22,7 @@
       - GNU Make
 
   *** Compatibility
-      Currently, Sun can be compiled in Linux and Windows (MacOS is untested), however, generated
-      Assembly code for Sun source code only works for Linux at the moment due to differences
-      between Windows x64 assembly call conventions and SysV ABI conventions.
+      Currently, Sun can be compiled only in Linux (MacOS is untested).
 
     You can use our {./Makefile}[Makefile] to compile Sun, just run `make` in Sun repository
     directory and Make will handle everything for you. Produced `sun` binary should be under
