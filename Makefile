@@ -14,10 +14,15 @@ LDFLAGS =
 INCLUDE =
 
 EXTRA_CFLAGS  = -fdata-sections -ffunction-sections
-EXTRA_LDFLAGS = -Wl
+EXTRA_LDFLAGS =
 
 # Include $(INCLUDE) into $(CFLAGS) for compilation linking
 CFLAGS += $(INCLUDE)
+
+# Add extra flags for GCC
+ifeq ($(CC),gcc)
+	EXTRA_LDFLAGS += -Wl,--gc-sections
+endif
 
 # Check if building for release so we can add optimization flags and debug symbols when needed
 ifeq ($(release),1)
