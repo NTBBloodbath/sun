@@ -6,8 +6,10 @@
 
 # Build macros
 # ============
+release = 0
+
 CC      = clang
-CFLAGS  = -O3 -Wall -Wextra -std=c18
+CFLAGS  = -Wall -Wextra -std=c18
 LDFLAGS =
 INCLUDE =
 
@@ -16,6 +18,16 @@ EXTRA_LDFLAGS = -Wl
 
 # Include $(INCLUDE) into $(CFLAGS) for compilation linking
 CFLAGS += $(INCLUDE)
+
+# Check if building for release so we can add optimization flags and debug symbols when needed
+ifeq ($(release),1)
+	# -O2 : Moderate level of optimization which enables most optimizations.
+	CFLAGS += -O2
+else
+	# -g3 : include extra debugging information, such as macros definitions present in the program.
+	# -O0 : “no optimization”, this level compiles the fastest and generates the most debuggable code.
+	CFLAGS += -g3 -O0
+endif
 
 # Files and Directories
 # =====================

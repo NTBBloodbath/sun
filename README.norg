@@ -18,8 +18,27 @@
 
  ** Building from source
   *** Requirements
-      - GCC +8.1 / Clang +7.0
+      - GCC +8.1 / Clang +7.0 (recommended)
       - GNU Make
+
+  *** Compatibility
+      Currently, Sun can be compiled in Linux and Windows (MacOS is untested), however, generated
+      Assembly code for Sun source code only works for Linux at the moment due to differences
+      between Windows x64 assembly call conventions and SysV ABI conventions.
+
+    You can use our {./Makefile}[Makefile] to compile Sun, just run `make` in Sun repository
+    directory and Make will handle everything for you. Produced `sun` binary should be under
+    `build/bin` directory if everything goes well.
+
+    > *NOTE*: our Makefile is going to use `clang` as the compiler by default, if you want to use
+    > `gcc` instead just pass the `CC` variable to make call, e.g. `make CC=gcc`.
+
+    By default, our Makefile generates debugging builds of Sun compiler, to generate a build for
+    production (with optimizations) you should pass `release=1` variable to make call.
 
  ** License
     Sun is licensed under {./LICENSE}[MIT] license.
+
+
+#comment
+vim:sw=2:ts=2:cole=3:cocu=n:tw=100:norl:nofen:
