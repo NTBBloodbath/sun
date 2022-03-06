@@ -47,6 +47,10 @@ int add_glob(char *name) {
 
     // Get a new symbol slot and fill it then return the slot number
     slot_pos = new_glob();
+#ifdef _WIN32
     Gsym[slot_pos].name = _strdup(name);
+#elif __unix__
+    Gsym[slot_pos].name = strdup(name);
+#endif
     return slot_pos;
 }
