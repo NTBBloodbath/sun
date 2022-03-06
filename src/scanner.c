@@ -51,14 +51,16 @@ static int skip() {
             c = look_ahead();
         }
 
-        if (c != '/') break;
+        if (c != '/')
+            break;
         c = look_ahead();
 
         // Skip comments
         // TODO: add support for multi-line comments
         if (c == '/') {
             while ((c = look_ahead()) != EOF) {
-                if (c == '\n') break;
+                if (c == '\n')
+                    break;
             }
         }
     }
