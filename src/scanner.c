@@ -33,22 +33,36 @@ static int look_ahead() {
 }
 
 /**
- * @brief Skip whitespaces
+ * @brief Skip whitespaces and comments
  *
- * @return Next character after skipping whitespaces
+ * @return Next character after skipping unwanted characters
  */
-static int skip_whitespace() {
+static int skip() {
     int c = look_ahead();
 
-    // Skip rules:
-    // - whitespace
-    // - line feed (newline)
-    // - tab
-    // - carriage return
-    // - formfeed
-    while (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\f') {
+    for (;;) {
+        // Skip rules:
+        // - whitespace
+        // - line feed (newline)
+        // - tab
+        // - carriage return
+        // - formfeed
+        while (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\f') {
+            c = look_ahead();
+        }
+
+        if (c != '/') break;
         c = look_ahead();
+
+        // Skip comments
+        // TODO: add support for multi-line comments
+        if (c == '/') {
+            while ((c = look_ahead()) != EOF) {
+                if (c == '\n') break;
+            }
+        }
     }
+
     return c;
 }
 
@@ -158,7 +172,7 @@ static int scan_keyword(char *str) {
  * @return 1 if token is valid, 0 otherwise
  */
 int scan(struct token *t) {
-    int c = skip_whitespace();
+    int c = skip();
     int token_kind;
 
     switch (c) {
@@ -237,7 +251,7 @@ int scan(struct token *t) {
         }
 
         // Raise an Unexpected token error
-        fprintf(stderr, "Unexpected token '%d' on line '%d'\n", c, curr_line);
+        fprintf(stderr, "Unexpected token '%c' on line %d\n", c, curr_line);
         exit(1);
     }
 

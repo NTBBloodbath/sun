@@ -74,7 +74,7 @@ void statements() {
         case T_EOF:
             return;
         default:
-            fprintf(stderr, "Syntax error, token '%d' on line '%d'\n", Token.token, curr_line);
+            fprintf(stderr, "Syntax error, token '%d' on line %d\n", Token.token, curr_line);
             exit(1);
         }
     }

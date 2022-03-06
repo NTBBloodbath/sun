@@ -12,7 +12,7 @@
  */
 void match(int t, char *str) {
     if (Token.token != t) {
-        fprintf(stderr, "'%s' expected on line '%d', got '%d'\n", str, curr_line, Token.token);
+        fprintf(stderr, "'%s' expected on line %d, got '%d'\n", str, curr_line, Token.token);
         exit(1);
     }
 
