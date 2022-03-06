@@ -8,7 +8,7 @@
 /**
  * @brief Put back an unwanted character
  */
-static void look_behind(int c) { go_back = c; }
+static void look_behind(int ch) { go_back = ch; }
 
 /**
  * @brief Get the next character from the input file
@@ -16,20 +16,20 @@ static void look_behind(int c) { go_back = c; }
  * @return next character integer value
  */
 static int look_ahead() {
-    int c;
+    int ch;
 
     if (go_back) {
-        c = go_back; // go back if there is a prev character
+        ch = go_back; // go back if there is a prev character
         go_back = 0;
-        return c;
+        return ch;
     }
 
-    c = fgetc(sun_file);
-    if (c == '\n') {
+    ch = fgetc(sun_file);
+    if (ch == '\n') {
         curr_line++;
     }
 
-    return c;
+    return ch;
 }
 
 /**
@@ -38,7 +38,8 @@ static int look_ahead() {
  * @return Next character after skipping unwanted characters
  */
 static int skip() {
-    int c = look_ahead();
+    int prev_ch;
+    int ch = look_ahead();
 
     for (;;) {
         // Skip rules:
@@ -47,25 +48,38 @@ static int skip() {
         // - tab
         // - carriage return
         // - formfeed
-        while (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\f') {
-            c = look_ahead();
+        while (ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f') {
+            ch = look_ahead();
         }
 
-        if (c != '/')
+        if (ch != '/')
             break;
-        c = look_ahead();
-
-        // Skip comments
-        // TODO: add support for multi-line comments
-        if (c == '/') {
-            while ((c = look_ahead()) != EOF) {
-                if (c == '\n')
+        ch = look_ahead();
+        if (ch != '*' && ch != '/') {
+            look_behind(ch);
+            ch = '/';
+            break;
+        }
+        if (ch == '/') {
+            // Single-line comments
+            while ((ch = look_ahead()) != EOF) {
+                if (ch == '\n')
                     break;
+            }
+        } else {
+            prev_ch = 0;
+            // Multi-line comments
+            while ((ch = look_ahead()) != EOF) {
+                if (ch == '/' && prev_ch == '*') {
+                    ch = look_ahead();
+                    break;
+                }
+                prev_ch = ch;
             }
         }
     }
 
-    return c;
+    return ch;
 }
 
 /**
@@ -81,19 +95,19 @@ static int ch_pos(char *str, int ch) {
     return (pos ? pos - str : -1);
 }
 
-static int scan_int(int c) {
+static int scan_int(int ch) {
     int i, val = 0;
 
     // Convert each int character into an int value
-    while ((i = ch_pos("0123456789", c)) >= 0) {
+    while ((i = ch_pos("0123456789", ch)) >= 0) {
         // We multiply the current value and then add the new int to it
         // e.g. 64 gets converted to 6 * 10 + 4 so 60 + 4 and the final result is 64 as expected
         val = val * 10 + i;
-        c = look_ahead();
+        ch = look_ahead();
     }
 
     // Look behind if we hit a non-integer character
-    look_behind(c);
+    look_behind(ch);
     return val;
 }
 
@@ -105,27 +119,27 @@ static int scan_int(int c) {
  * @param limit [in] Identifier length limit
  * @return Identifier length
  */
-static int scan_identifier(int c, char *buf, int limit) {
+static int scan_identifier(int ch, char *buf, int limit) {
     int i = 0;
 
     // Allowed characters for declaring identifiers:
     // - Digits
     // - Alpha
     // - Underscores
-    while (isdigit(c) || isalpha(c) || c == '_') {
+    while (isdigit(ch) || isalpha(ch) || ch == '_') {
         // Raise an error if we hit the identifier length limit
         // and append it to buf and get next character otherwise
         if (limit - 1 == i) {
             fprintf(stderr, "Identifier too long on line %d\n", curr_line);
             exit(1);
         } else if (i < limit - 1) {
-            buf[i++] = c;
+            buf[i++] = ch;
         }
-        c = look_ahead();
+        ch = look_ahead();
     }
 
     // Put a character back once we hit a non-valid one
-    look_behind(c);
+    look_behind(ch);
     // Null-terminate the buf and return its length
     buf[i] = '\0';
     return i;
@@ -174,10 +188,10 @@ static int scan_keyword(char *str) {
  * @return 1 if token is valid, 0 otherwise
  */
 int scan(struct token *t) {
-    int c = skip();
+    int ch = skip();
     int token_kind;
 
-    switch (c) {
+    switch (ch) {
     case EOF:
         t->token = T_EOF;
         return 0;
@@ -194,34 +208,34 @@ int scan(struct token *t) {
         t->token = T_SLASH;
         break;
     case '=':
-        if ((c = look_ahead()) == '=') {
+        if ((ch = look_ahead()) == '=') {
             t->token = T_EQ;
         } else {
-            look_behind(c);
+            look_behind(ch);
             t->token = T_ASSIGN;
         }
         break;
     case '!':
-        if ((c = look_ahead()) == '=') {
+        if ((ch = look_ahead()) == '=') {
             t->token = T_NE;
         } else {
-            fprintf(stderr, "Unrecognized character '%c' on line %d\n", c, curr_line);
+            fprintf(stderr, "Unrecognized character '%c' on line %d\n", ch, curr_line);
             exit(1);
         }
         break;
     case '<':
-        if ((c = look_ahead()) == '=') {
+        if ((ch = look_ahead()) == '=') {
             t->token = T_LE;
         } else {
-            look_behind(c);
+            look_behind(ch);
             t->token = T_LT;
         }
         break;
     case '>':
-        if ((c = look_ahead()) == '=') {
+        if ((ch = look_ahead()) == '=') {
             t->token = T_GE;
         } else {
-            look_behind(c);
+            look_behind(ch);
             t->token = T_GT;
         }
         break;
@@ -233,13 +247,13 @@ int scan(struct token *t) {
         break;
     default:
         // Scan int literals
-        if (isdigit(c)) {
+        if (isdigit(ch)) {
             t->token = T_INTEGER;
-            t->int_value = scan_int(c);
+            t->int_value = scan_int(ch);
             break;
-        } else if (isalpha(c) || c == '_') {
+        } else if (isalpha(ch) || ch == '_') {
             // Read in a keyword or identifier
-            scan_identifier(c, Text, TEXTLEN);
+            scan_identifier(ch, Text, TEXTLEN);
 
             // If it's a recognized keyword, return its token
             if ((token_kind = scan_keyword(Text))) {
@@ -253,7 +267,7 @@ int scan(struct token *t) {
         }
 
         // Raise an Unexpected token error
-        fprintf(stderr, "Unexpected token '%c' on line %d\n", c, curr_line);
+        fprintf(stderr, "Unexpected token '%c' on line %d\n", ch, curr_line);
         exit(1);
     }
 
