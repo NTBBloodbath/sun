@@ -20,9 +20,15 @@
   *** Requirements
       - GCC +8.1 / Clang +7.0 (recommended)
       - GNU Make
+      - LLVM
 
   *** Compatibility
-      Currently, Sun can be compiled only in Linux (MacOS is untested).
+      Currently, Sun can be compiled in Linux and Windows (MacOS is untested), however, generated
+      Assembly code for Sun source code only works for Linux at the moment due to differences
+      between Windows x64 assembly call conventions and SysV ABI conventions.
+
+      Codebase is going to be rewritten to produce LLVM IR code instead of directly generating
+      Assembly code so we can fix Windows compatibility without suffering.
 
     You can use our {./Makefile}[Makefile] to compile Sun, just run `make` in Sun repository
     directory and Make will handle everything for you. Produced `sun` binary should be under
