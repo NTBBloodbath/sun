@@ -41,8 +41,14 @@ SRC_DIR       = $(CURDIR)/src
 BUILD_DIR     = $(CURDIR)/build
 BUILD_BIN_DIR = $(BUILD_DIR)/bin
 BUILD_OBJ_DIR = $(BUILD_DIR)/.objects
+
 # Output executable
+ifeq ($(OS), Windows_NT)
 BUILD_BIN_PATH = $(BUILD_BIN_DIR)/sun
+	BUILD_BIN_PATH = $(BUILD_BIN_DIR)/sun.exe
+else
+	BUILD_BIN_PATH = $(BUILD_BIN_DIR)/sun
+endif
 
 # Files patterns
 SRC_FILES = .c
@@ -64,8 +70,13 @@ $(BUILD_OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 all: sun
 
 setup_dirs:
+ifeq ($(OS),Windows_NT)
+	pwsh -c 'if (!(Test-Path "$(BUILD_BIN_DIR)")) { mkdir "$(BUILD_BIN_DIR)" }'
+	pwsh -c 'if (!(Test-Path "$(BUILD_OBJ_DIR)")) { mkdir "$(BUILD_OBJ_DIR)" }'
+else
 	if [ ! -d "$(BUILD_BIN_DIR)" ]; then mkdir -p "$(BUILD_BIN_DIR)"; fi
 	if [ ! -d "$(BUILD_OBJ_DIR)" ]; then mkdir -p "$(BUILD_OBJ_DIR)"; fi
+endif
 
 sun: setup_dirs $(OBJS)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJS) -o $(BUILD_BIN_PATH)
@@ -73,7 +84,12 @@ sun: setup_dirs $(OBJS)
 	@echo "Produced Sun binary is located at '$(BUILD_BIN_PATH)'"
 
 clean:
+ifeq ($(OS),Windows_NT)
+	pwsh -c '"$(OBJS)".split(" ") | rm -fo'
+	pwsh -c 'rm "$(BUILD_BIN_PATH)"'
+else
 	rm -f $(OBJS) $(BUILD_BIN_PATH)
+endif
 
 rebuild: clean $(OBJS) sun
 
