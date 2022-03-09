@@ -1,3 +1,8 @@
+// ┌                                                          ┐
+// │  Copyright (c) 2022 NTBBloodbath. All rights reserved.   │
+// │  Use of this source code is governed by an MIT license   │
+// │          that can be found in the LICENSE file.          │
+// └                                                          ┘
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -175,7 +180,7 @@ static int scan_keyword(char *str) {
                 return T_INT;
             }
             break;
-            break;
+        break;
     }
 
     return 0;
