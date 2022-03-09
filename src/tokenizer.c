@@ -64,19 +64,19 @@ static struct AST_node *primary() {
     int id;
 
     switch (Token.token) {
-    case T_INTEGER:
-        node = make_ast_leaf(A_INTEGER, Token.int_value);
-        break;
-    case T_IDENTIFIER:
-        if ((id = find_glob(Text)) == -1) {
-            fprintf(stderr, "Unknown variable '%s' on line %d\n", Text, curr_line);
+        case T_INTEGER:
+            node = make_ast_leaf(A_INTEGER, Token.int_value);
+            break;
+        case T_IDENTIFIER:
+            if ((id = find_glob(Text)) == -1) {
+                fprintf(stderr, "Unknown variable '%s' on line %d\n", Text, curr_line);
+                exit(1);
+            }
+            node = make_ast_leaf(A_IDENTIFIER, id);
+            break;
+        default:
+            fprintf(stderr, "Syntax error on line %d, got token '%d'\n", curr_line, Token.token);
             exit(1);
-        }
-        node = make_ast_leaf(A_IDENTIFIER, id);
-        break;
-    default:
-        fprintf(stderr, "Syntax error on line %d, got token '%d'\n", curr_line, Token.token);
-        exit(1);
     }
     // Scan in the next token
     scan(&Token);

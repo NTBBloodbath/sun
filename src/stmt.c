@@ -62,20 +62,20 @@ void assignment_statement(void) {
 void statements() {
     while (1) {
         switch (Token.token) {
-        case T_PRINT:
-            print_statement();
-            break;
-        case T_LET:
-            var_declaration();
-            break;
-        case T_IDENTIFIER:
-            assignment_statement();
-            break;
-        case T_EOF:
-            return;
-        default:
-            fprintf(stderr, "Syntax error, token '%d' on line %d\n", Token.token, curr_line);
-            exit(1);
+            case T_PRINT:
+                print_statement();
+                break;
+            case T_LET:
+                var_declaration();
+                break;
+            case T_IDENTIFIER:
+                assignment_statement();
+                break;
+            case T_EOF:
+                return;
+            default:
+                fprintf(stderr, "Syntax error, token '%d' on line %d\n", Token.token, curr_line);
+                exit(1);
         }
     }
 }

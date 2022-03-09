@@ -160,22 +160,22 @@ static int scan_keyword(char *str) {
     //
     // NOTE: This is going to be useful in the future.
     switch (*str) {
-    case 'p':
-        if (!strcmp(str, "print")) {
-            return T_PRINT;
-        }
-        break;
-    case 'l':
-        if (!strcmp(str, "let")) {
-            return T_LET;
-        }
-        break;
-    case 'i':
-        if (!strcmp(str, "int")) {
-            return T_INT;
-        }
-        break;
-        break;
+        case 'p':
+            if (!strcmp(str, "print")) {
+                return T_PRINT;
+            }
+            break;
+        case 'l':
+            if (!strcmp(str, "let")) {
+                return T_LET;
+            }
+            break;
+        case 'i':
+            if (!strcmp(str, "int")) {
+                return T_INT;
+            }
+            break;
+            break;
     }
 
     return 0;
@@ -192,83 +192,83 @@ int scan(struct token *t) {
     int token_kind;
 
     switch (ch) {
-    case EOF:
-        t->token = T_EOF;
-        return 0;
-    case '+':
-        t->token = T_PLUS;
-        break;
-    case '-':
-        t->token = T_MINUS;
-        break;
-    case '*':
-        t->token = T_STAR;
-        break;
-    case '/':
-        t->token = T_SLASH;
-        break;
-    case '=':
-        if ((ch = look_ahead()) == '=') {
-            t->token = T_EQ;
-        } else {
-            look_behind(ch);
-            t->token = T_ASSIGN;
-        }
-        break;
-    case '!':
-        if ((ch = look_ahead()) == '=') {
-            t->token = T_NE;
-        } else {
-            fprintf(stderr, "Unrecognized character '%c' on line %d\n", ch, curr_line);
-            exit(1);
-        }
-        break;
-    case '<':
-        if ((ch = look_ahead()) == '=') {
-            t->token = T_LE;
-        } else {
-            look_behind(ch);
-            t->token = T_LT;
-        }
-        break;
-    case '>':
-        if ((ch = look_ahead()) == '=') {
-            t->token = T_GE;
-        } else {
-            look_behind(ch);
-            t->token = T_GT;
-        }
-        break;
-    case ':':
-        t->token = T_COLON;
-        break;
-    case ';':
-        t->token = T_SEMI;
-        break;
-    default:
-        // Scan int literals
-        if (isdigit(ch)) {
-            t->token = T_INTEGER;
-            t->int_value = scan_int(ch);
+        case EOF:
+            t->token = T_EOF;
+            return 0;
+        case '+':
+            t->token = T_PLUS;
             break;
-        } else if (isalpha(ch) || ch == '_') {
-            // Read in a keyword or identifier
-            scan_identifier(ch, Text, TEXTLEN);
+        case '-':
+            t->token = T_MINUS;
+            break;
+        case '*':
+            t->token = T_STAR;
+            break;
+        case '/':
+            t->token = T_SLASH;
+            break;
+        case '=':
+            if ((ch = look_ahead()) == '=') {
+                t->token = T_EQ;
+            } else {
+                look_behind(ch);
+                t->token = T_ASSIGN;
+            }
+            break;
+        case '!':
+            if ((ch = look_ahead()) == '=') {
+                t->token = T_NE;
+            } else {
+                fprintf(stderr, "Unrecognized character '%c' on line %d\n", ch, curr_line);
+                exit(1);
+            }
+            break;
+        case '<':
+            if ((ch = look_ahead()) == '=') {
+                t->token = T_LE;
+            } else {
+                look_behind(ch);
+                t->token = T_LT;
+            }
+            break;
+        case '>':
+            if ((ch = look_ahead()) == '=') {
+                t->token = T_GE;
+            } else {
+                look_behind(ch);
+                t->token = T_GT;
+            }
+            break;
+        case ':':
+            t->token = T_COLON;
+            break;
+        case ';':
+            t->token = T_SEMI;
+            break;
+        default:
+            // Scan int literals
+            if (isdigit(ch)) {
+                t->token = T_INTEGER;
+                t->int_value = scan_int(ch);
+                break;
+            } else if (isalpha(ch) || ch == '_') {
+                // Read in a keyword or identifier
+                scan_identifier(ch, Text, TEXTLEN);
 
-            // If it's a recognized keyword, return its token
-            if ((token_kind = scan_keyword(Text))) {
-                t->token = token_kind;
+                // If it's a recognized keyword, return its token
+                if ((token_kind = scan_keyword(Text))) {
+                    t->token = token_kind;
+                    break;
+                }
+
+                // Not a recognized keyword nor identifier, return an identifier
+                t->token = T_IDENTIFIER;
                 break;
             }
 
-            // Not a recognized keyword nor identifier, return an identifier
-            t->token = T_IDENTIFIER;
-            break;
-        }
-
-        // Raise an Unexpected token error
-        fprintf(stderr, "Unexpected token '%c' on line %d\n", ch, curr_line);
-        exit(1);
+            // Raise an Unexpected token error
+            fprintf(stderr, "Unexpected token '%c' on line %d\n", ch, curr_line);
+            exit(1);
     }
 
     return 1;
