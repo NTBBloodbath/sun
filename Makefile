@@ -19,6 +19,10 @@ EXTRA_LDFLAGS =
 # Include $(INCLUDE) into $(CFLAGS) for compilation linking
 CFLAGS += $(INCLUDE)
 
+# Include LLVM flags into $(CFLAGS) and $(LDFLAGS)
+CFLAGS += $(shell llvm-config --cflags)
+LDFLAGS += $(shell llvm-config --libs --cflags --ldflags)
+
 # Add extra flags for GCC
 ifeq ($(CC),gcc)
 	EXTRA_LDFLAGS += -Wl,--gc-sections
