@@ -7,10 +7,10 @@
 #define SUN_DATA_H
 #include "sym.h"
 #include "token.h"
+#include <llvm-c/Core.h>
 #include <llvm-c/ExecutionEngine.h>
 #include <llvm-c/Types.h>
 #include <stdio.h>
-#include <llvm-c/Core.h>
 
 #ifndef extern_
 #define extern_ extern

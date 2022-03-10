@@ -180,7 +180,7 @@ static int scan_keyword(char *str) {
                 return T_INT;
             }
             break;
-        break;
+            break;
     }
 
     return 0;
