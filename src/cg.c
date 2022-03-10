@@ -11,7 +11,7 @@
 
 #include "ast.h"
 #include "globals.h"
-#include "new_cg.h"
+#include "cg.h"
 
 /**
  * @brief Generate LLVM IR code for signed 32 bits integers

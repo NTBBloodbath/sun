@@ -27,7 +27,7 @@
 #undef extern_
 #include "ast.h"
 #include "cli.h"
-#include "new_gen.h"
+#include "gen.h"
 #include "scanner.h"
 #include "tokenizer.h"
 
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     // Get the first token from input file
     scan(&Token);
     struct sun_ast_node_st *tree = bin_expr(0);
-    LLVMValueRef generated_llvm = new_gen_ast(tree, sun_mod, sun_builder);
+    LLVMValueRef generated_llvm = gen_ast(tree, sun_mod, sun_builder);
 
     // Write module bytecode to output file
     if (LLVMWriteBitcodeToFile(sun_mod, "out.bc") != 0) {

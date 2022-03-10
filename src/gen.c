@@ -9,7 +9,7 @@
 
 #include "ast.h"
 #include "globals.h"
-#include "new_cg.h"
+#include "cg.h"
 
 /*
  * @brief Generate LLVM IR code recursivrly from given AST
@@ -19,7 +19,7 @@
  * @param builder [in] LLVM Builder reference
  * @return LLVM IR code
  */
-LLVMValueRef new_gen_ast(struct sun_ast_node_st *tree, LLVMModuleRef module,
+LLVMValueRef gen_ast(struct sun_ast_node_st *tree, LLVMModuleRef module,
                          LLVMBuilderRef builder) {
     // Recursively generate binary expressions
     return sun_cg(tree, module, builder);

@@ -3,8 +3,8 @@
 // │  Use of this source code is governed by an MIT license   │
 // │          that can be found in the LICENSE file.          │
 // └                                                          ┘
-#ifndef SUN_NEW_AST_H
-#define SUN_NEW_AST_H
+#ifndef SUN_AST_H
+#define SUN_AST_H
 
 /*
  * @brief Sun AST node types enum
