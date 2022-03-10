@@ -7,7 +7,10 @@
 #define SUN_DATA_H
 #include "sym.h"
 #include "token.h"
+#include <llvm-c/ExecutionEngine.h>
+#include <llvm-c/Types.h>
 #include <stdio.h>
+#include <llvm-c/Core.h>
 
 #ifndef extern_
 #define extern_ extern
@@ -22,4 +25,9 @@ extern_ FILE *sun_file;
 extern_ FILE *sun_out_file;
 extern_ char Text[TEXTLEN + 1];
 extern_ struct symbol_table Gsym[NSYM];
+
+extern_ LLVMModuleRef sun_mod;
+extern_ LLVMBuilderRef builder;
+extern_ LLVMExecutionEngineRef engine;
+extern_ LLVMPassManagerRef pass_manager;
 #endif

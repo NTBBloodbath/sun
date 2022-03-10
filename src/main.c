@@ -8,6 +8,12 @@
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <errno.h>
+#include <llvm-c/Core.h>
+#include <llvm-c/ExecutionEngine.h>
+#include <llvm-c/Target.h>
+#include <llvm-c/Transforms/Scalar.h>
+#include <llvm-c/Transforms/Utils.h>
+#include <llvm-c/Types.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +31,50 @@
 static void init_compiler() {
     curr_line = 1;
     go_back = '\n';
+    sun_mod = LLVMModuleCreateWithName("sun");
+
+    builder = LLVMCreateBuilder();
+
+    // LLVMInitializeNativeTarget();
+    // LLVMLinkInMCJIT();
+
+    // Create engine for execution
+    char *msg;
+    if (LLVMCreateExecutionEngineForModule(&engine, sun_mod, &msg) == 1) {
+        fprintf(stderr, "%s\n", msg);
+        LLVMDisposeMessage(msg);
+        exit(1);
+    }
+
+    /* Setup optimizations */
+    pass_manager = LLVMCreateFunctionPassManagerForModule(sun_mod);
+    // Promote allocas to registers
+    LLVMAddPromoteMemoryToRegisterPass(pass_manager);
+    // peephole optimizations
+    LLVMAddInstructionCombiningPass(pass_manager);
+    // Reassociate expressions
+    LLVMAddReassociatePass(pass_manager);
+    // Eliminate common subexprs
+    LLVMAddGVNPass(pass_manager);
+    // Simplify control flow graph, e.g. delete unreachable blocks
+    LLVMAddCFGSimplificationPass(pass_manager);
+
+    LLVMInitializeFunctionPassManager(pass_manager);
+}
+
+static void stop_compiler() {
+    // Dump a representation of sun module to stderr
+    printf("===== LLVM IR code:\n");
+    LLVMDumpModule(sun_mod);
+
+    printf("\n===== Code output:\n");
+
+    // Free pass pipeline memory
+    LLVMDisposePassManager(pass_manager);
+    // Free builder memory
+    LLVMDisposeBuilder(builder);
+    // Free execution engine memory
+    LLVMDisposeExecutionEngine(engine);
 }
 
 int main(int argc, char *argv[]) {
@@ -61,5 +111,6 @@ int main(int argc, char *argv[]) {
     fclose(sun_file);
     fclose(sun_out_file);
 
+    stop_compiler();
     exit(0);
 }
