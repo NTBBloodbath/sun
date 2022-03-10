@@ -7,10 +7,10 @@
 #define SUN_NEW_CG_H
 
 #include <llvm-c/Core.h>
-#include "ast.h"
+#include "new_ast.h"
 
-LLVMValueRef sun_cg_i32(struct AST_node *node);
-LLVMValueRef sun_cg_i64(struct AST_node *node);
-LLVMValueRef sun_cg_u32(struct AST_node *node);
-LLVMValueRef sun_cg_u64(struct AST_node *node);
+LLVMValueRef sun_cg_i32(struct sun_ast_node_st *node);
+LLVMValueRef sun_cg_i64(struct sun_ast_node_st *node);
+LLVMValueRef sun_cg_u32(struct sun_ast_node_st *node);
+LLVMValueRef sun_cg_u64(struct sun_ast_node_st *node);
 #endif

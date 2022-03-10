@@ -10,48 +10,48 @@
  * @brief Sun AST node types enum
  */
 typedef enum {
-    SUN_AST_TYPE_NUMBER,
+    NUMBER,
     // SUN_AST_VARIABLE,
-    SUN_AST_TYPE_BIN_EXPR,
-} SUN_AST_NODE_TYPE_E;
+    BIN_EXPR,
+} sun_ast_node_type_et;
 
 /*
  * @brief Sun AST binary operators enum
  */
 typedef enum {
-    SUN_BINOP_ADD,
-    SUN_BINOP_SUB,
-    SUN_BINOP_MUL,
-    SUN_BINOP_DIV,
-} SUN_AST_BINOP_E;
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+} sun_ast_binop_et;
 
 /*
  * @brief Sun AST type for binary expressions
  */
-typedef struct SUN_AST_BIN_EXPR {
-    SUN_AST_BINOP_E operator;
-    struct SUN_AST_NODE *lhs;
-    struct SUN_AST_NODE *rhs;
-} SUN_AST_BIN_EXPR;
+typedef struct sun_ast_bin_expr_st {
+    struct sun_ast_node_st *lhs;
+    struct sun_ast_node_st *rhs;
+    sun_ast_binop_et operator;
+} sun_ast_bin_expr_st;
 
 /*
  * @brief Sun AST for Number type
  */
-typedef struct SUN_AST_NUMBER {
+typedef struct sun_ast_number_st {
     char *type;
     int value;
-} SUN_AST_NUMBER;
+} sun_ast_number_st;
 
 /*
  * @brief Sun AST Node type
  */
-typedef struct SUN_AST_NODE {
-    SUN_AST_NODE_TYPE_E type;
+typedef struct sun_ast_node_st {
+    sun_ast_node_type_et type;
     union {
-        SUN_AST_NUMBER number;
-        SUN_AST_BIN_EXPR bin_expr;
+        sun_ast_number_st number;
+        sun_ast_bin_expr_st bin_expr;
     };
-} SUN_AST_NODE;
+} sun_ast_node_st;
 
 // enum {
 //     A_ADD = 1,    // +
