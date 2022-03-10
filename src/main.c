@@ -31,7 +31,6 @@
 static void init_compiler() {
     curr_line = 1;
     go_back = '\n';
-    sun_mod = LLVMModuleCreateWithName("sun");
 
     builder = LLVMCreateBuilder();
 
@@ -67,8 +66,6 @@ static void stop_compiler() {
     printf("===== LLVM IR code:\n");
     LLVMDumpModule(sun_mod);
 
-    printf("\n===== Code output:\n");
-
     // Free pass pipeline memory
     LLVMDisposePassManager(pass_manager);
     // Free builder memory
@@ -83,6 +80,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    // Create LLVM module for sun source code file and initialize compiler
+    sun_mod = LLVMModuleCreateWithName(argv[1]);
     init_compiler();
 
     // Open input file
