@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     // Get the first token from input file
     scan(&Token);
     struct sun_ast_node_st *tree = bin_expr(0);
-    new_gen_ast(tree, sun_mod, sun_builder);
+    LLVMValueRef generated_llvm = new_gen_ast(tree, sun_mod, sun_builder);
     // Close input/output files
     fclose(sun_file);
     // fclose(sun_out_file);
@@ -110,7 +110,10 @@ int main(int argc, char *argv[]) {
     // Free all AST nodes
     free_ast_node(tree);
 
-    // Stop compiler, send LLVM IR to stderr and free all stuff
+    // Stop compiler, send LLVM IR to stderr and free LLVM builder, engine and pass manager
     stop_compiler();
+    LLVMDumpValue(generated_llvm);
+    printf("\n");
+
     exit(0);
 }

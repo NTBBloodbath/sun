@@ -95,17 +95,15 @@ LLVMValueRef sun_cg_bin_expr(struct sun_ast_node_st *node, LLVMModuleRef module,
         return NULL;
     }
 
-    // char *ops[] = {"", "+", "-", "*", "/"};
-    // printf("[DEBUG] Binary expression operator: %s\n", ops[node->bin_expr.operator]);
     switch (node->bin_expr.operator) {
         case ADD:
-            return LLVMBuildFAdd(builder, lhs, rhs, "addtmp");
+            return LLVMBuildAdd(builder, lhs, rhs, "addtmp");
             break;
         case SUB:
-            return LLVMBuildFSub(builder, lhs, rhs, "subtmp");
+            return LLVMBuildSub(builder, lhs, rhs, "subtmp");
             break;
         case MUL:
-            return LLVMBuildFMul(builder, lhs, rhs, "multmp");
+            return LLVMBuildMul(builder, lhs, rhs, "multmp");
             break;
         case DIV:
             return LLVMBuildFDiv(builder, lhs, rhs, "divtmp");
@@ -120,11 +118,11 @@ LLVMValueRef sun_cg_bin_expr(struct sun_ast_node_st *node, LLVMModuleRef module,
 LLVMValueRef sun_cg(struct sun_ast_node_st *node, LLVMModuleRef module, LLVMBuilderRef builder) {
     switch (node->type) {
         case NUMBER:
-            printf("[DEBUG] Got number '%d'\n", node->number.value);
+            // printf("[DEBUG] Got number '%d'\n", node->number.value);
             return sun_cg_number(node);
             break;
         case BIN_EXPR:
-            printf("[DEBUG] Got binary expression\n");
+            // printf("[DEBUG] Got binary expression\n");
             return sun_cg_bin_expr(node, module, builder);
             break;
         default:
