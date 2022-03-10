@@ -10,6 +10,8 @@
 #endif
 
 #include <errno.h>
+#include <llvm-c/Analysis.h>
+#include <llvm-c/BitWriter.h>
 #include <llvm-c/Core.h>
 #include <llvm-c/ExecutionEngine.h>
 #include <llvm-c/Target.h>
@@ -63,6 +65,11 @@ static void init_compiler() {
 }
 
 static void stop_compiler() {
+    // Verify generated LLVM IR module
+    char *err = NULL;
+    LLVMVerifyModule(sun_mod, LLVMAbortProcessAction, &err);
+    LLVMDisposeMessage(err);
+
     // Dump a representation of sun module to stderr
     printf("===== LLVM IR code:\n");
     LLVMDumpModule(sun_mod);
@@ -93,16 +100,22 @@ int main(int argc, char *argv[]) {
     }
 
     // Create output file
-    // sun_out_file = fopen("out.s", "w");
-    // if (sun_out_file == NULL) {
-    //     fprintf(stderr, "Unable to create 'out.sun' file: %s\n", strerror(errno));
-    //     exit(1);
-    // }
+    sun_out_file = fopen("out.bc", "w");
+    if (sun_out_file == NULL) {
+        fprintf(stderr, "Unable to create 'out.bc' file: %s\n", strerror(errno));
+        exit(1);
+    }
 
     // Get the first token from input file
     scan(&Token);
     struct sun_ast_node_st *tree = bin_expr(0);
     LLVMValueRef generated_llvm = new_gen_ast(tree, sun_mod, sun_builder);
+
+    // Write module bytecode to output file
+    if (LLVMWriteBitcodeToFile(sun_mod, "out.bc") != 0) {
+        fprintf(stderr, "Error writing bitcode to file\n");
+        exit(1);
+    }
     // Close input/output files
     fclose(sun_file);
     // fclose(sun_out_file);
