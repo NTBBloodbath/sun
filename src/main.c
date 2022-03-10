@@ -5,7 +5,9 @@
 // └                                                          ┘
 // Microsoft has deprecated lots of calls which use buffers to improve code security.
 // Using this line to remove deprecation notice
+#ifdef _WIN32
 #define _CRT_SECURE_NO_DEPRECATE
+#endif
 
 #include <errno.h>
 #include <llvm-c/Core.h>
