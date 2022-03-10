@@ -6,6 +6,8 @@
 #ifndef SUN_GEN_H
 #define SUN_GEN_H
 
+#include "ast.h"
+
 int gen_ast(struct AST_node *ast, int reg);
 
 void gen_free_registers(void);
