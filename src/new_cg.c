@@ -19,9 +19,9 @@
  * @param node [in] AST Node for i32 type
  * @return Value reference to integer
  */
-static LLVMValueRef sun_cg_i32(struct sun_ast_node_st *node) {
-    return LLVMConstInt(LLVMInt32Type(), node->number.value, 1);
-}
+// static LLVMValueRef sun_cg_i32(struct sun_ast_node_st *node) {
+//     return LLVMConstInt(LLVMInt32Type(), node->number.value, 1);
+// }
 
 /**
  * @brief Generate LLVM IR code for signed 64 bits integers
@@ -39,9 +39,9 @@ static LLVMValueRef sun_cg_i64(struct sun_ast_node_st *node) {
  * @param node [in] AST Node for u32 type
  * @return Value reference to integer
  */
-static LLVMValueRef sun_cg_u32(struct sun_ast_node_st *node) {
-    return LLVMConstInt(LLVMInt32Type(), node->number.value, 0);
-}
+// static LLVMValueRef sun_cg_u32(struct sun_ast_node_st *node) {
+//     return LLVMConstInt(LLVMInt32Type(), node->number.value, 0);
+// }
 
 /**
  * @brief Generate LLVM IR code for unsigned 64 bits integers
@@ -49,9 +49,9 @@ static LLVMValueRef sun_cg_u32(struct sun_ast_node_st *node) {
  * @param node [in] AST Node for u64 type
  * @return Value reference to integer
  */
-static LLVMValueRef sun_cg_u64(struct sun_ast_node_st *node) {
-    return LLVMConstInt(LLVMInt64Type(), node->number.value, 0);
-}
+// static LLVMValueRef sun_cg_u64(struct sun_ast_node_st *node) {
+//     return LLVMConstInt(LLVMInt64Type(), node->number.value, 0);
+// }
 
 /**
  * @brief Generate LLVM IR code for integers
@@ -60,6 +60,7 @@ static LLVMValueRef sun_cg_u64(struct sun_ast_node_st *node) {
  * @return Value reference to integer
  */
 LLVMValueRef sun_cg_number(struct sun_ast_node_st *node) {
+    // TODO: uncomment this code once we start parsing number types
     // char *type = node->number.type;
     // switch (*type) {
     //     case 'i':
@@ -94,23 +95,24 @@ LLVMValueRef sun_cg_bin_expr(struct sun_ast_node_st *node, LLVMModuleRef module,
         return NULL;
     }
 
-    char *ops[] = {"+", "-", "*", "/"};
-    printf("[DEBUG] Binary expression op: %d\n", node->bin_expr.operator);
+    // char *ops[] = {"", "+", "-", "*", "/"};
     // printf("[DEBUG] Binary expression operator: %s\n", ops[node->bin_expr.operator]);
-    // switch (node->bin_expr.operator) {
-    //     case ADD:
-    //         return LLVMBuildFAdd(builder, lhs, rhs, "addtmp");
-    //         break;
-    //     case SUB:
-    //         return LLVMBuildFSub(builder, lhs, rhs, "subtmp");
-    //         break;
-    //     case MUL:
-    //         return LLVMBuildFMul(builder, lhs, rhs, "multmp");
-    //         break;
-    //     case DIV:
-    //         return LLVMBuildFDiv(builder, lhs, rhs, "divtmp");
-    //         break;
-    // }
+    switch (node->bin_expr.operator) {
+        case ADD:
+            return LLVMBuildFAdd(builder, lhs, rhs, "addtmp");
+            break;
+        case SUB:
+            return LLVMBuildFSub(builder, lhs, rhs, "subtmp");
+            break;
+        case MUL:
+            return LLVMBuildFMul(builder, lhs, rhs, "multmp");
+            break;
+        case DIV:
+            return LLVMBuildFDiv(builder, lhs, rhs, "divtmp");
+            break;
+        default:
+            fprintf(stderr, "Syntax error: Unknown operator on line %d\n", curr_line);
+    }
 
     return NULL;
 }
@@ -119,14 +121,14 @@ LLVMValueRef sun_cg(struct sun_ast_node_st *node, LLVMModuleRef module, LLVMBuil
     switch (node->type) {
         case NUMBER:
             printf("[DEBUG] Got number '%d'\n", node->number.value);
-            // return sun_cg_number(node);
+            return sun_cg_number(node);
             break;
         case BIN_EXPR:
             printf("[DEBUG] Got binary expression\n");
-            // return sun_cg_bin_expr(node, module, builder);
+            return sun_cg_bin_expr(node, module, builder);
             break;
         default:
-            fprintf(stderr, "Got unknown AST node type '%d'\n", node->type);
+            fprintf(stderr, "Got unknown AST node type '%d' on line %d\n", node->type, curr_line);
             exit(1);
     }
 

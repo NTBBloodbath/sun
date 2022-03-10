@@ -68,7 +68,7 @@ static struct sun_ast_node_st *primary() {
 
     switch (Token.token) {
         case T_INTEGER:
-            node = make_ast_leaf(NUMBER, Token.int_value);
+            node = make_ast_integer(Token.int_value);
             break;
         default:
             fprintf(stderr, "Syntax error on line %d, got token '%d'\n", curr_line, Token.token);
@@ -110,7 +110,7 @@ struct sun_ast_node_st *bin_expr(int prev_token_prec) {
         rhs = bin_expr(op_prec[token_type]);
 
         // Join our sub-tree with our tree and convert the token into an AST operation
-        lhs = make_ast_node(arithmetic_op(token_type), lhs, rhs, 0);
+        lhs = make_ast_binexpr(arithmetic_op(token_type), lhs, rhs);
 
         // Update our current token and return just the left node if no more tokens left
         token_type = Token.token;

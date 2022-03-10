@@ -23,8 +23,8 @@
 #define extern_
 #include "globals.h"
 #undef extern_
-#include "cli.h"
 #include "ast.h"
+#include "cli.h"
 #include "new_gen.h"
 #include "scanner.h"
 #include "tokenizer.h"
@@ -33,7 +33,7 @@ static void init_compiler() {
     curr_line = 1;
     go_back = '\n';
 
-    builder = LLVMCreateBuilder();
+    sun_builder = LLVMCreateBuilder();
 
     // LLVMInitializeNativeTarget();
     // LLVMLinkInMCJIT();
@@ -70,7 +70,7 @@ static void stop_compiler() {
     // Free pass pipeline memory
     LLVMDisposePassManager(pass_manager);
     // Free builder memory
-    LLVMDisposeBuilder(builder);
+    LLVMDisposeBuilder(sun_builder);
     // Free execution engine memory
     LLVMDisposeExecutionEngine(engine);
 }
@@ -93,27 +93,24 @@ int main(int argc, char *argv[]) {
     }
 
     // Create output file
-    sun_out_file = fopen("out.s", "w");
-    if (sun_out_file == NULL) {
-        fprintf(stderr, "Unable to create 'out.sun' file: %s\n", strerror(errno));
-        exit(1);
-    }
+    // sun_out_file = fopen("out.s", "w");
+    // if (sun_out_file == NULL) {
+    //     fprintf(stderr, "Unable to create 'out.sun' file: %s\n", strerror(errno));
+    //     exit(1);
+    // }
 
     // Get the first token from input file
     scan(&Token);
-    struct sun_ast_node_st *ast;
-    ast = bin_expr(0);
-    new_gen_ast(ast, sun_mod, builder);
-    // Set preamble in output file
-    // gen_preamble();
-    // Parse statements in input file
-    // statements();
-    // Set postamble in output file
-    // gen_postamble();
-    // Close input/output file
+    struct sun_ast_node_st *tree = bin_expr(0);
+    new_gen_ast(tree, sun_mod, sun_builder);
+    // Close input/output files
     fclose(sun_file);
-    fclose(sun_out_file);
+    // fclose(sun_out_file);
 
+    // Free all AST nodes
+    free_ast_node(tree);
+
+    // Stop compiler, send LLVM IR to stderr and free all stuff
     stop_compiler();
     exit(0);
 }

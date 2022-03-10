@@ -27,7 +27,7 @@ extern_ char Text[TEXTLEN + 1];
 // extern_ struct symbol_table Gsym[NSYM];
 
 extern_ LLVMModuleRef sun_mod;
-extern_ LLVMBuilderRef builder;
+extern_ LLVMBuilderRef sun_builder;
 extern_ LLVMExecutionEngineRef engine;
 extern_ LLVMPassManagerRef pass_manager;
 #endif

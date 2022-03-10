@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "globals.h"
 #include "ast.h"
+#include "globals.h"
 #include "new_cg.h"
 
 /*
@@ -19,7 +19,8 @@
  * @param builder [in] LLVM Builder reference
  * @return LLVM IR code
  */
-LLVMValueRef new_gen_ast(struct sun_ast_node_st *tree, LLVMModuleRef module, LLVMBuilderRef builder) {
+LLVMValueRef new_gen_ast(struct sun_ast_node_st *tree, LLVMModuleRef module,
+                         LLVMBuilderRef builder) {
     // Recursively generate binary expressions
-    return sun_cg_bin_expr(tree, module, builder);
+    return sun_cg(tree, module, builder);
 }

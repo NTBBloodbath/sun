@@ -19,7 +19,7 @@ typedef enum {
  * @brief Sun AST binary operators enum
  */
 typedef enum {
-    ADD,
+    ADD = 1, // Start at 1 so operators will match tokens enum order
     SUB,
     MUL,
     DIV,
@@ -53,25 +53,8 @@ typedef struct sun_ast_node_st {
     };
 } sun_ast_node_st;
 
-// enum {
-//     A_ADD = 1,    // +
-//     A_MINUS,      // -
-//     A_MULTIPLY,   // *
-//     A_DIVIDE,     // /
-//     A_EQ,         // ==
-//     A_NE,         // !=
-//     A_LT,         // <
-//     A_GT,         // >
-//     A_LE,         // <=
-//     A_GE,         // >=
-//     A_INTEGER,    // 10
-//     A_IDENTIFIER, // hello
-//     A_LVIDENT,    // left-hand side variable
-//     A_ASSIGN,     // =
-// };
-//
-struct sun_ast_node_st *make_ast_node(int op, struct sun_ast_node_st *lhs, struct sun_ast_node_st *rhs,
-                                      int int_value);
-struct sun_ast_node_st *make_ast_unary(int op, struct sun_ast_node_st *lhs, int int_value);
-struct sun_ast_node_st *make_ast_leaf(int op, int int_value);
+sun_ast_node_st *make_ast_integer(int value);
+sun_ast_node_st *make_ast_binexpr(sun_ast_binop_et operator, sun_ast_node_st * lhs,
+                                  sun_ast_node_st *rhs);
+void free_ast_node(sun_ast_node_st *node);
 #endif
