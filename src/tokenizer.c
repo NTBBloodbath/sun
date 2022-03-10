@@ -9,7 +9,6 @@
 #include "ast.h"
 #include "globals.h"
 #include "scanner.h"
-#include "sym.h"
 #include "token.h"
 
 /**
@@ -64,20 +63,12 @@ int arithmetic_op(int token) {
  *
  * @return AST node
  */
-static struct AST_node *primary() {
-    struct AST_node *node;
-    int id;
+static struct sun_ast_node_st *primary() {
+    struct sun_ast_node_st *node;
 
     switch (Token.token) {
         case T_INTEGER:
-            node = make_ast_leaf(A_INTEGER, Token.int_value);
-            break;
-        case T_IDENTIFIER:
-            if ((id = find_glob(Text)) == -1) {
-                fprintf(stderr, "Unknown variable '%s' on line %d\n", Text, curr_line);
-                exit(1);
-            }
-            node = make_ast_leaf(A_IDENTIFIER, id);
+            node = make_ast_leaf(NUMBER, Token.int_value);
             break;
         default:
             fprintf(stderr, "Syntax error on line %d, got token '%d'\n", curr_line, Token.token);
@@ -94,8 +85,8 @@ static struct AST_node *primary() {
  *
  * @param prev_token_prec [in] Previous token precedence
  */
-struct AST_node *bin_expr(int prev_token_prec) {
-    struct AST_node *lhs, *rhs;
+struct sun_ast_node_st *bin_expr(int prev_token_prec) {
+    struct sun_ast_node_st *lhs, *rhs;
     int token_type;
 
     // Get the integer literal on the left.

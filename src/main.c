@@ -23,11 +23,10 @@
 #define extern_
 #include "globals.h"
 #undef extern_
-#include "ast.h"
 #include "cli.h"
-#include "gen.h"
+#include "ast.h"
+#include "new_gen.h"
 #include "scanner.h"
-#include "stmt.h"
 #include "tokenizer.h"
 
 static void init_compiler() {
@@ -102,12 +101,15 @@ int main(int argc, char *argv[]) {
 
     // Get the first token from input file
     scan(&Token);
+    struct sun_ast_node_st *ast;
+    ast = bin_expr(0);
+    new_gen_ast(ast, sun_mod, builder);
     // Set preamble in output file
-    gen_preamble();
+    // gen_preamble();
     // Parse statements in input file
-    statements();
+    // statements();
     // Set postamble in output file
-    gen_postamble();
+    // gen_postamble();
     // Close input/output file
     fclose(sun_file);
     fclose(sun_out_file);

@@ -15,15 +15,15 @@
  * @param int_value [in] An integer literal value
  * @return
  */
-struct AST_node *make_ast_node(int op, struct AST_node *lhs, struct AST_node *rhs, int int_value) {
-    struct AST_node *node;
+struct sun_ast_node_st *make_ast_node(int op, struct sun_ast_node_st *lhs, struct sun_ast_node_st *rhs, int int_value) {
+    struct sun_ast_node_st *node;
 
     // Allocate a new AST node in memory
-    node = (struct AST_node *)xmalloc(sizeof(struct AST_node));
-    node->op = op;
-    node->lhs = lhs;
-    node->rhs = rhs;
-    node->value.int_value = int_value;
+    node = (struct sun_ast_node_st *)xmalloc(sizeof(struct sun_ast_node_st));
+    node->bin_expr.operator = op;
+    node->bin_expr.lhs = lhs;
+    node->bin_expr.rhs = rhs;
+    node->number.value = int_value;
 
     return node;
 }
@@ -35,7 +35,7 @@ struct AST_node *make_ast_node(int op, struct AST_node *lhs, struct AST_node *rh
  * @param lhs [in] The lhs AST node
  * @param int_value [in] An integer literal value
  */
-struct AST_node *make_ast_unary(int op, struct AST_node *lhs, int int_value) {
+struct sun_ast_node_st *make_ast_unary(int op, struct sun_ast_node_st *lhs, int int_value) {
     return make_ast_node(op, lhs, NULL, int_value);
 }
 
@@ -45,6 +45,6 @@ struct AST_node *make_ast_unary(int op, struct AST_node *lhs, int int_value) {
  * @param op [in] The operator
  * @param int_value [in] An integer literal value
  */
-struct AST_node *make_ast_leaf(int op, int int_value) {
+struct sun_ast_node_st *make_ast_leaf(int op, int int_value) {
     return make_ast_node(op, NULL, NULL, int_value);
 }

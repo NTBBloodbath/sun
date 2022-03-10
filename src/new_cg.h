@@ -6,11 +6,11 @@
 #ifndef SUN_NEW_CG_H
 #define SUN_NEW_CG_H
 
-#include "new_ast.h"
+#include "ast.h"
 #include <llvm-c/Core.h>
 
-LLVMValueRef sun_cg_i32(struct sun_ast_node_st *node);
-LLVMValueRef sun_cg_i64(struct sun_ast_node_st *node);
-LLVMValueRef sun_cg_u32(struct sun_ast_node_st *node);
-LLVMValueRef sun_cg_u64(struct sun_ast_node_st *node);
+LLVMValueRef sun_cg(struct sun_ast_node_st *node, LLVMModuleRef module, LLVMBuilderRef builder);
+LLVMValueRef sun_cg_number(struct sun_ast_node_st *node);
+LLVMValueRef sun_cg_bin_expr(struct sun_ast_node_st *node, LLVMModuleRef module,
+                             LLVMBuilderRef builder);
 #endif

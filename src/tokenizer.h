@@ -10,6 +10,6 @@
 #include "token.h"
 
 int arithmetic_op(int token);
-struct AST_node *bin_expr();
+struct sun_ast_node_st *bin_expr();
 
 #endif
