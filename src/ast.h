@@ -6,7 +6,7 @@
 #ifndef SUN_AST_H
 #define SUN_AST_H
 
-/*
+/**
  * @brief Sun AST node types enum
  */
 typedef enum {
@@ -15,7 +15,7 @@ typedef enum {
     BIN_EXPR,
 } sun_ast_node_type_et;
 
-/*
+/**
  * @brief Sun AST binary operators enum
  */
 typedef enum {
@@ -25,7 +25,7 @@ typedef enum {
     DIV,
 } sun_ast_binop_et;
 
-/*
+/**
  * @brief Sun AST type for binary expressions
  */
 typedef struct sun_ast_bin_expr_st {
@@ -34,7 +34,7 @@ typedef struct sun_ast_bin_expr_st {
     sun_ast_binop_et operator;
 } sun_ast_bin_expr_st;
 
-/*
+/**
  * @brief Sun AST for Number type
  */
 typedef struct sun_ast_number_st {
@@ -42,7 +42,7 @@ typedef struct sun_ast_number_st {
     int value;
 } sun_ast_number_st;
 
-/*
+/**
  * @brief Sun AST Node type
  */
 typedef struct sun_ast_node_st {

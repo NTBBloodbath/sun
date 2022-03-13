@@ -6,12 +6,12 @@
 #ifndef SUN_TOKEN_H
 #define SUN_TOKEN_H
 
-/*
+/**
  * @brief Length of symbols in input
  */
 #define TEXTLEN 512
 
-/*
+/**
  * @brief Token table
  */
 struct token {
@@ -19,6 +19,9 @@ struct token {
     int int_value;
 };
 
+/**
+ * @brief Token Enum
+ */
 enum {
     T_EOF, // EOF
     // ARITHMETIC
