@@ -1,7 +1,7 @@
 # Build artifacts
-build/
-out.s
 out
+out.*
+build/
 
 # Local testing files
 file.sun
