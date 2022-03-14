@@ -9,7 +9,7 @@
 release = 0
 
 CC      = clang++
-CFLAGS  = -Wall -Wextra -std=c18
+CFLAGS  = -Wall -Wextra -std=c++17
 LDFLAGS =
 INCLUDE =
 
