@@ -14,13 +14,13 @@
   Sun programming language syntax follows common styles, that means brackets
   for code blocks instead of indentation-based blocks or `then/do ... end`.
 
-  Sun programming language is a C-based compiled language with a self-compiled
+  Sun programming language is a C++-based compiled language with a self-compiled
   compiler. That means Sun can compile itself.
 
   Sun programming language is a statically-typed language, that means everything
   has a type and needs to be declared during compile-time.
 
-  > *NOTE:* Sun programming language compiler makes use of latest C standard (C18).
+  > *NOTE:* Sun programming language compiler makes use of C++17 standard.
 
  ** Sun syntax
     As said before, Sun syntax is meant to be simple, easy and enjoyable so Sun

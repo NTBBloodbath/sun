@@ -8,7 +8,7 @@
 # ============
 release = 0
 
-CC      = clang
+CC      = clang++
 CFLAGS  = -Wall -Wextra -std=c18
 LDFLAGS =
 INCLUDE =
@@ -24,7 +24,7 @@ CFLAGS += $(shell llvm-config --cflags)
 LDFLAGS += $(shell llvm-config --libs --cflags --ldflags)
 
 # Add extra flags for GCC
-ifeq ($(CC),gcc)
+ifeq ($(CC),g++)
 	EXTRA_LDFLAGS += -Wl,--gc-sections
 endif
 
@@ -55,8 +55,8 @@ else
 endif
 
 # Files patterns
-SRC_FILES = .c
-HDR_FILES = .h
+SRC_FILES = .cpp
+HDR_FILES = .hpp
 # Recursively get all C source files from src directory
 SOURCES   = $(foreach d,$(SRC_DIR),$(wildcard $(addprefix $(d)/*,$(SRC_FILES))))
 # Recursively get all C header files from src directory
@@ -68,7 +68,7 @@ OBJS      = $(addprefix $(BUILD_OBJ_DIR)/,$(notdir $(addsuffix .o, $(basename $(
 # ==============================
 objs: $(OBJS)
 
-$(BUILD_OBJ_DIR)/%.o:$(SRC_DIR)/%.c
+$(BUILD_OBJ_DIR)/%.o:$(SRC_DIR)/%.cpp
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c $< -o $@
 
 all: sun
@@ -99,7 +99,7 @@ rebuild: clean $(OBJS) sun
 
 help:
 	echo "Sun Programming Language Makefile"
-	echo "Sun is owned by NTBBloodbath and licensed under GPLv3 License"
+	echo "Sun is owned by NTBBloodbath and licensed under MIT License"
 	echo
 	echo "Usage: make [TARGET]"
 	echo
