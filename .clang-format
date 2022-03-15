@@ -4,5 +4,6 @@ IndentWidth: 4
 ColumnLimit: 100
 IndentCaseBlocks: true
 IndentCaseLabels: true
+NamespaceIndentation: All
 
 # vim: ft=yaml:sw=2:ts=2:
