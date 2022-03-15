@@ -3,6 +3,7 @@
 // │  Use of this source code is governed by an MIT license   │
 // │          that can be found in the LICENSE file.          │
 // └                                                          ┘
+#include <cctype>
 #include <cstdio>
 #include <iostream>
 
@@ -15,7 +16,7 @@ static void look_behind(State &state) {
         state.file_pos -= 1;
 }
 
-static char look_ahead(State &state, int count) {
+static char look_ahead(State &state, unsigned long count) {
     char ch;
     int pos = state.file_pos;
     std::string source = state.sun_source_file;
@@ -23,10 +24,10 @@ static char look_ahead(State &state, int count) {
     // If current position plus count to look ahead
     // is larger than source file then return EOF
     // sun::logger::dbg(std::to_string(pos + count));
-    // if (pos + count > source.length()) {
-    //     sun::logger::dbg("Reached EOF");
-    //     return EOF;
-    // }
+    if (pos + count > source.length()) {
+        // sun::logger::dbg("Reached EOF");
+        return EOF;
+    }
 
     ch = source[pos];
     if (ch == '\n')
@@ -38,54 +39,42 @@ static char look_ahead(State &state, int count) {
     return ch;
 }
 
-static void skip(State &state) {
-    int prev_ch;
+/**
+ * @brief Skip whitespaces on source code
+ *
+ * @param state [in] Compiler state
+ */
+static void skip_whitespace(State &state) {
     char ch = look_ahead(state, 1);
 
-    for (;;) {
-        // Skip rules:
-        // - whitespace
-        // - line feed (newline)
-        // - tab
-        // - carriage return
-        // - formfeed
-        while (ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f') {
-            ch = look_ahead(state, 1);
-        }
-
-        if (ch != '/')
-            break;
+    // Skip rules:
+    // - whitespace
+    // - line feed (newline)
+    // - tab
+    // - carriage return
+    // - formfeed
+    while (ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f') {
         ch = look_ahead(state, 1);
-
-        if (ch != '*' && ch != '/') {
-            look_behind(state);
-            ch = '/';
-            break;
-        }
-        if (ch == '/') {
-            // Single-line comments
-            while ((ch = look_ahead()) != EOF) {
-                if (ch == '\n')
-                    break;
-            }
-        } else {
-            prev_ch = 0;
-            // Multi-line comments
-            while ((ch = look_ahead()) != EOF) {
-                if (ch == '/' && prev_ch == '*') {
-                    ch = look_ahead();
-                    break;
-                }
-                prev_ch = ch;
-            }
-        }
     }
-
-    return ch;
-
 }
 
-void scan(State &state) {
-    for (int i = 0; i < state.sun_source_file.length(); i++)
-        std::cout << "Current character: '" << look_ahead(state, i + 1) << "'" << std::endl;
+void scan(State &state, Token *token) {
+    // Skip whitespaces
+    skip_whitespace(state);
+    // Decrease current position on file
+    look_behind(state);
+
+    // Get next character on file and scan it
+    char ch = look_ahead(state, 1);
+    switch (ch) {
+        case EOF:
+            token->kind = T_EOF;
+            break;
+        default:
+            // Scan int literals
+            if (std::isdigit(ch)) {
+                token->kind = T_INTEGER;
+                token->number.value = 0;
+            }
+    }
 }
