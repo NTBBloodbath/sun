@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
         std::cout << cli.help().str();
     }
 
-    // TODO: scan every passed file instead of just first one
+    // TODO(ntbbloodbath): scan every passed file instead of just first one
     std::string input_file_name(files[0]);
     std::ifstream file(input_file_name);
     if (!file)

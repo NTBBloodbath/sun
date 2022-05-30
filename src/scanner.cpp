@@ -11,11 +11,27 @@
 #include "scanner.hpp"
 #include "state.hpp"
 
+/**
+ * @brief Decrease current position in buffer
+ *
+ * @param[in] state Compiler state
+ *
+ * @private
+ */
 static void look_behind(State &state) {
     if (state.file_pos > 0)
         state.file_pos -= 1;
 }
 
+/**
+ * @brief Increase current possition in buffer by N count of characters
+ *
+ * @param[in] state Compiler state
+ * @param[in] count Characters count to look ahead
+ * @return Next character in buffer
+ *
+ * @private
+ */
 static char look_ahead(State &state, unsigned long count) {
     char ch;
     int pos = state.file_pos;
@@ -42,7 +58,9 @@ static char look_ahead(State &state, unsigned long count) {
 /**
  * @brief Skip whitespaces on source code
  *
- * @param state [in] Compiler state
+ * @param[in] state Compiler state
+ *
+ * @private
  */
 static void skip_whitespace(State &state) {
     char ch = look_ahead(state, 1);
@@ -58,6 +76,12 @@ static void skip_whitespace(State &state) {
     }
 }
 
+/**
+ * @brief Scan a buffer
+ *
+ * @param[in] state Compiler state
+ * @param[in] token 
+ */
 void scan(State &state, Token *token) {
     // Skip whitespaces
     skip_whitespace(state);

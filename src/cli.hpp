@@ -7,5 +7,5 @@
 #include "../third-party/argparse/argparse.hpp"
 
 namespace sun::cli {
-    argparse::ArgumentParser init(int argc, char *argv[]);
+   argparse::ArgumentParser init(int argc, char *argv[]);
 }

@@ -1,7 +1,7 @@
 .POSIX:
 .SUFFIXES:
-.PHONY: all objs help info clean
-.SILENT: setup_dirs help info clean
+.PHONY: all objs help info clean docs
+.SILENT: setup_dirs help info clean docs
 .DEFAULT_GOAL := all
 
 # Build macros
@@ -97,6 +97,9 @@ endif
 
 rebuild: clean $(OBJS) sun
 
+docs:
+	doxygen Doxyfile
+
 help:
 	echo "Sun Programming Language Makefile"
 	echo "Sun is owned by NTBBloodbath and licensed under MIT License"
@@ -108,6 +111,7 @@ help:
 	echo -e "\tobjs\tCompile Sun (not linking)"
 	echo -e "\tclean\tClean objects and executable Sun binary"
 	echo -e "\trebuild Runs clean and all targets"
+	echo -e "\tdocs\tGenerate documentation"
 	echo -e "\thelp\tShow this message"
 	echo -e "\tinfo\tShow debugging build information"
 	echo

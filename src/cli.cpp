@@ -7,13 +7,32 @@
 
 #include "../third-party/argparse/argparse.hpp"
 
+/**
+ * @brief Sun CLI
+ *
+ * @namespace sun::cli
+ */
 namespace sun::cli {
-    // CLI private constants
-    static const std::string VERSION("0.1.0a");
-    static const std::string
-        COPYRIGHT("Copyright (c) 2022 NTBBloodbath. Sun is distributed under MIT license.");
+    /**
+     * @brief Sun version
+     *
+     * @private
+     */
+    static const std::string VERSION = "0.1.0a";
+    /**
+     * @brief Sun copyright notice
+     *
+     * @private
+     */
+    static const std::string COPYRIGHT = "Copyright (c) 2022 NTBBloodbath. Sun is distributed under MIT license.";
 
-    // Initialize CLI
+    /**
+     * @brief Initialize Sun CLI
+     *
+     * @param[in] argc Arguments count
+     * @param[in] argv Arguments array
+     * @return argparse::ArgumentParser
+     */
     argparse::ArgumentParser init(int argc, char *argv[]) {
         // '--version' output
         static const std::string version_output("Sun compiler v" + VERSION + "\n" + COPYRIGHT +
