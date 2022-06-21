@@ -27,7 +27,7 @@ jobs:
       - name: Run clang-format
         run: |
           cd ./sun
-          xmake -y run fmt
+          xmake run -y fmt
 
       - name: Commit changes
         run: |
