@@ -59,7 +59,7 @@ target("fmt")
     cprint("${bright green}[100%%]:${clear} Done")
   end)
   on_uninstall(function(_)
-    return nil
+    return
   end)
 
 -- generate documentation
@@ -72,5 +72,5 @@ target("docs")
     cprint("${bright green}[100%%]:${clear} Done")
   end)
   on_uninstall(function(_)
-    return nil
+    return
   end)
