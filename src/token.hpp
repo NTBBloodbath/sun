@@ -6,6 +6,8 @@
 #pragma once
 #include <iostream>
 
+using namespace std;
+
 /**
  * @brief Sun namespace
  *
@@ -31,10 +33,10 @@ namespace sun {
      * @struct sun::Token
      */
     struct Token {
-        TokenType type;    // Token type
-        std::string value; // Token value
-        std::string file;  // File where the token was found
-        int line;          // Line where the token was found
-        int column;        // Column where the token was found
+        TokenType type; // Token type
+        string value;   // Token value
+        string file;    // File where the token was found
+        int line;       // Line where the token was found
+        int column;     // Column where the token was found
     };
 } // namespace sun
