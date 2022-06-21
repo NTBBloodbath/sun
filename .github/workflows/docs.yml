@@ -1,0 +1,49 @@
+name: generate docs
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'docs/css'
+      - 'docs/js'
+
+jobs:
+  doxygen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          path: sun
+
+      - name: Install Doxygen
+        run: |
+          sudo apt update -q
+          sudo apt install -q -y doxygen
+
+      - name: Install XMake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Run Doxygen
+        run: |
+          cd ./sun
+          xmake -y run docs
+
+      - name: Commit documentation
+        run: |
+          cd ./sun
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if [[ ! -z $(git status -s) ]]; then
+            git add .
+            git commit -m "docs: update documentation"
+          fi
+
+      - name: Push documentation
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: ./sun

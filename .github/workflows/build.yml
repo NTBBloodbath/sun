@@ -1,0 +1,39 @@
+# TODO: add Windows and MacOS to build targets later
+
+name: build
+
+on:
+  push:
+    paths:
+      - 'src/**'
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          path: sun
+
+      - name: Install dependencies
+        run: |
+          sudo apt update -q
+          sudo apt install -y -q build-essential
+
+      - name: Install XMake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Run XMake
+        run: |
+          cd ./sun
+          xmake -y
+
+      - name: Upload produced binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: sun-linux-x86_64-debug
+          path: ./sun/build/linux/x86_64/debug/sun
+          if-no-files-found: error

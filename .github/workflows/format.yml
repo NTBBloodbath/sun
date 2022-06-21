@@ -1,0 +1,47 @@
+name: format source code
+
+on:
+  push:
+    paths:
+      - 'src/**'
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          path: sun
+
+      - name: Install clang-format
+        run: |
+          sudo apt update -q
+          sudo apt install -y -q clang-format
+
+      - name: Install XMake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Run clang-format
+        run: |
+          cd ./sun
+          xmake -y run fmt
+
+      - name: Commit changes
+        run: |
+          cd ./sun
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if [[ ! -z $(git status -s) ]]; then
+            git add .
+            git commit -m "chore: format source code"
+          fi
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: ./sun
