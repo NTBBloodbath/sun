@@ -17,9 +17,9 @@
   in {@ tests} directory.
 
  ** Building from source
-  *** Requirements
+*** Requirements
       - GCC +10 / Clang +11 (recommended)
-      - GNU Make
+      - Xmake +2.6.0
       - LLVM
 
   *** Compatibility
@@ -30,15 +30,14 @@
       Codebase is going to be rewritten to produce LLVM IR code instead of directly generating
       Assembly code so we can fix Windows compatibility without suffering.
 
-    You can use our {@ Makefile} to compile Sun, just run `make` in Sun repository
-    directory and Make will handle everything for you. Produced `sun` binary should be under
-    `build/bin` directory if everything goes well.
+      You can use XMake to compile Sun, just run `xmake` in Sun repository
+      directory and XMake will handle everything for you. Produced `sun` binary should be under
+      `build/{platform}/{arch}/{build_mode}` directory if everything goes well.
 
-    > *NOTE*: our Makefile is going to use `clang` as the compiler by default, if you want to use
-    > `gcc` instead just pass the `CC` variable to make call, e.g. `make CC=g++`.
-
-    By default, our Makefile generates debugging builds of Sun compiler, to generate a build for
-    production (with optimizations) you should pass `release=1` variable to make call.
+      Currently XMake produces a debugging build of Sun compiler. If you want to produce a
+      production binary of it, you should `xmake f -m release` then `xmake` to compile Sun compiler.
+      You could also `xmake f -m releasedbg` if you want a production build with debugging
+      information.
 
  ** License
     Sun is licensed under {./LICENSE}[MIT] license.

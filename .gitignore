@@ -1,7 +1,11 @@
-# Build artifacts
+# Xmake cache and build artifacts
 out
 out.*
 build/
+.xmake/
+
+# MacOS cache
+.DS_Store
 
 # Local testing files
 file.sun
