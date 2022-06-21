@@ -24,7 +24,8 @@ namespace sun::cli {
      *
      * @private
      */
-    static const std::string COPYRIGHT = "Copyright (c) 2022 NTBBloodbath. Sun is distributed under MIT license.";
+    static const std::string COPYRIGHT =
+        "Copyright (c) 2022 NTBBloodbath. Sun is distributed under MIT license.";
 
     /**
      * @brief Initialize Sun CLI

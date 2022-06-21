@@ -10,6 +10,7 @@
 #include "logger.hpp"
 #include "scanner.hpp"
 #include "state.hpp"
+#include "token.hpp"
 
 /**
  * @brief Decrease current position in buffer
@@ -80,9 +81,9 @@ static void skip_whitespace(State &state) {
  * @brief Scan a buffer
  *
  * @param[in] state Compiler state
- * @param[in] token 
+ * @param[in] token
  */
-void scan(State &state, Token *token) {
+void scan(State &state) {
     // Skip whitespaces
     skip_whitespace(state);
     // Decrease current position on file
@@ -92,13 +93,11 @@ void scan(State &state, Token *token) {
     char ch = look_ahead(state, 1);
     switch (ch) {
         case EOF:
-            token->kind = T_EOF;
+
             break;
         default:
             // Scan int literals
             if (std::isdigit(ch)) {
-                token->kind = T_INTEGER;
-                token->number.value = 0;
             }
     }
 }

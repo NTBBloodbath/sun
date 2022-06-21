@@ -1,0 +1,19 @@
+{
+    "tasks": [
+        {
+            "name": "Makefile build (debugging)",
+            "cmd": "make",
+            "tags": ["make", "build"]
+        },
+        {
+            "name": "Makefile build (production)",
+            "cmd": "make release=1",
+            "tags": ["make", "build"]
+        },
+        {
+            "name": "Makefile docs",
+            "cmd": "make docs",
+            "tags": ["make", "docs"]
+        }
+    ]
+}

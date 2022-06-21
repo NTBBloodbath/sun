@@ -11,8 +11,8 @@
 #include "../third-party/argparse/argparse.hpp"
 #include "cli.hpp"
 #include "logger.hpp"
-#include "state.hpp"
 #include "scanner.hpp"
+#include "state.hpp"
 
 int main(int argc, char *argv[]) {
     // ===== Initialize CLI
