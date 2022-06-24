@@ -9,8 +9,8 @@
 using std::string;
 
 struct State {
-    int current_ln = 0;
-    int file_pos = 0;
+    int64_t current_ln = 0;
+    int64_t file_pos = -1;
     string sun_source_file;
     string sun_out_file;
 };
