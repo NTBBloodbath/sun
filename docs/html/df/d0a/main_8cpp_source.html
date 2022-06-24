@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('df/d0a/main_8cpp_source.html','../../'
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;token.hpp&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span> scan_file(<a class="code" href="../../de/def/structState.html">State</a> &amp;state) {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">struct </span><a class="code" href="../../de/d92/structsun_1_1Token.html">sun::Token</a> t;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="../../de/d92/structsun_1_1Token.html">sun::Token</a> t;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    std::array&lt;std::string, 5&gt; token_str = { <span class="stringliteral">&quot;+&quot;</span>, <span class="stringliteral">&quot;-&quot;</span>, <span class="stringliteral">&quot;*&quot;</span>, <span class="stringliteral">&quot;/&quot;</span>, <span class="stringliteral">&quot;integer&quot;</span> };</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// NOTE: this is for debugging purposes, should be removed later</span></div>
@@ -174,13 +174,13 @@ $(document).ready(function(){initNavTree('df/d0a/main_8cpp_source.html','../../'
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// Initialize compiler state</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="../../de/def/structState.html">State</a> state = {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        0,                 <span class="comment">// current line</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        0,                 <span class="comment">// file position</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        -1,                <span class="comment">// file position</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        sun_file_contents, <span class="comment">// source files</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="stringliteral">&quot;out.bc&quot;</span>,          <span class="comment">// TODO: parse &#39;--output&#39; CLI argument</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    };</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    scan_file(state);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    std::exit(0);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
