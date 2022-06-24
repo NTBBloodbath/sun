@@ -106,6 +106,30 @@ static int scan_number(State &state, int ch) {
 }
 
 /**
+ * @brief Skip comments on source code
+ *
+ * @param[in] state Compiler state
+ *
+ * @private
+ */
+static void skip_comment(State &state) {
+    // Check if this is a potential comment
+    char ch = look_ahead(state, 1);
+    if (ch != '/') { return; }
+    
+    // //, /* or not comment
+    switch (ch) {
+        case '/':
+            state.current_ln++;
+            break;
+        case '*':
+            break;
+        default:
+            look_behind(state);
+    }
+}
+
+/**
  * @brief Scan a buffer
  *
  * @param[in] state Compiler state
@@ -118,6 +142,8 @@ bool scan(State &state, sun::Token *t) {
     skip_whitespace(state);
     // Decrease current position on file
     look_behind(state);
+    // Skip comments
+    skip_comment(state);
 
     // Get next character on file to scan it
     char ch = look_ahead(state, 1);
