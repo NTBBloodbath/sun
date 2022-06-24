@@ -32,6 +32,10 @@ set_defaultmode("debug")
 for _, dep in ipairs(os.dirs("$(projectdir)/third-party"), path.basename) do
   add_includedirs(dep)
 end
+add_requires("catch2", { optional = true })
+
+-- enable version locks, similar to cargo.lock
+set_policy("package.requires_lock", true)
 
 -- headers directories
 add_includedirs("$(projectdir)/src")
@@ -43,6 +47,9 @@ target("sun")
 
   -- source files
   add_files("$(projectdir)/src/*.cpp")
+
+  -- dependencies (managed by xmake)
+  add_packages("catch2")
 
 -- format source code
 target("fmt")

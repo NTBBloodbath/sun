@@ -1,0 +1,15 @@
+{
+    __meta__ = {
+        version = "1.0"
+    },
+    ["linux|x86_64"] = {
+        ["catch2#31fecfc4"] = {
+            repo = {
+                branch = "master",
+                commit = "0e1f48f33ab8d0bab3e78337297a944f08cc36cf",
+                url = "https://gitlab.com/tboox/xmake-repo.git"
+            },
+            version = "2.13.9"
+        }
+    }
+}
