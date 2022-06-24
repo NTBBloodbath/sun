@@ -78,6 +78,38 @@ static void skip_whitespace(State &state) {
 }
 
 /**
+ * @brief Skip comments on source code
+ *
+ * @param[in] state Scanner state
+ *
+ * @private
+ */
+static void skip_comment(State &state) {
+    // Check if this is a potential comment
+    char ch = lookahead(state);
+    if (ch != '/') { return; }
+    
+    // //, /* or not comment
+    switch (ch) {
+        case '/':
+            if (lookahead(state, 2) == '/') {
+                for (char c = lookahead(state); (c != '\0'); c = lookahead(state)) {
+                    if (c == '\n') {
+                        state.file_pos++;
+                        break;
+                    }
+                    advance(state);
+                }
+            }
+            break;
+        case '*':
+            break;
+        default:
+            lookbehind(state);
+    }
+}
+
+/**
  * @brief Scan a number
  *
  * @param[in] state Scanner state
@@ -102,30 +134,6 @@ static int scan_number(State &state, int ch) {
 }
 
 /**
- * @brief Skip comments on source code
- *
- * @param[in] state Compiler state
- *
- * @private
- */
-static void skip_comment(State &state) {
-    // Check if this is a potential comment
-    char ch = look_ahead(state, 1);
-    if (ch != '/') { return; }
-    
-    // //, /* or not comment
-    switch (ch) {
-        case '/':
-            state.current_ln++;
-            break;
-        case '*':
-            break;
-        default:
-            look_behind(state);
-    }
-}
-
-/**
  * @brief Scan a buffer
  *
  * @param[in] state Scanner state
@@ -137,7 +145,7 @@ bool scan(State &state, sun::Token *t) {
     // Skip whitespace
     skip_whitespace(state);
     // skip comments
-    // skip_comment(state);
+    skip_comment(state);
 
     // Get next character on file to scan it
     char ch = lookahead(state);
