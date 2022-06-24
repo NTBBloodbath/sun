@@ -580,7 +580,7 @@ public:
       if (!argument.m_help.empty()) {
         stream << " ";
       }
-      stream << "[default: " << argument.m_default_value_repr << "]";
+      // stream << "[default: " << argument.m_default_value_repr << "]";
     } else if (argument.m_is_required) {
       if (!argument.m_help.empty()) {
         stream << " ";
