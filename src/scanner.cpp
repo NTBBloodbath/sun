@@ -14,77 +14,73 @@
 #include "token.hpp"
 
 /**
- * @brief Decrease current position in buffer
+ * @brief Looks back by `count` amount of characters in the source buffer
  *
- * @param[in] state Compiler state
+ * @param[in] state Scanner state
  *
  * @private
  */
-static void look_behind(State &state) {
-    if (state.file_pos > 0)
-        state.file_pos -= 1;
+static char lookbehind(const State &state, size_t count = 1) {
+    if (state.file_pos - count < 0)
+        return '\0';
+
+    return state.sun_source_file[state.file_pos - count];
 }
 
 /**
- * @brief Increase current possition in buffer by N count of characters
+ * @brief Looks ahead by `count` amount of characters in the source buffer
  *
- * @param[in] state Compiler state
+ * @param[in] state Scanner state
  * @param[in] count Characters count to look ahead
  * @return Next character in buffer
  *
  * @private
  */
-static char look_ahead(State &state, unsigned long count) {
-    char ch;
+static char lookahead(const State &state, size_t count = 1) {
     int pos = state.file_pos;
-    std::string source = state.sun_source_file;
 
     // If current position plus count to look ahead
     // is larger than source file then return EOF
-    if (pos + count > source.length()) {
-        // BUG: this seems to be doing nothing, it is returning a newline anyway
-        return EOF;
+    if (pos + count > state.sun_source_file.length()) {
+        return '\0';
     }
 
-    ch = source.at(pos);
-    if (ch == '\n')
-        state.current_ln += 1;
+    return state.sun_source_file[pos + count];
+}
 
-    // Increase position in file
-    state.file_pos += 1;
+static bool advance(State &state) {
+    if (state.file_pos != -1 && state.file_pos >= state.sun_source_file.length())
+        return false;
 
-    return ch;
+    if (lookahead(state) == '\n')
+        state.current_ln++;
+
+    state.file_pos++;
+    return true;
 }
 
 /**
  * @brief Skip whitespaces on source code
  *
- * @param[in] state Compiler state
+ * @param[in] state Scanner state
  *
  * @private
  */
 static void skip_whitespace(State &state) {
-    char ch = look_ahead(state, 1);
-
     // Skip rules:
     // - whitespace
     // - line feed (newline)
     // - tab
     // - carriage return
     // - formfeed
-    while (ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f') {
-
-        ch = look_ahead(state, 1);
-    }
-
-    // Restore current line to its initial value
-    state.current_ln = 0;
+    for (char c = lookahead(state); (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\f'); c = lookahead(state))
+        advance(state);
 }
 
 /**
  * @brief Scan a number
  *
- * @param[in] state Compiler state
+ * @param[in] state Scanner state
  * @param[in] ch 
  * @return A number value
  *
@@ -98,36 +94,36 @@ static int scan_number(State &state, int ch) {
         // Convert the current character to its integer value
         curr_int = ch - '0';
         value = value * 10 + curr_int;
-        ch = look_ahead(state, 1);
+        ch = lookahead(state);
+        advance(state);
     }
 
-    look_behind(state);
     return value;
 }
 
 /**
  * @brief Scan a buffer
  *
- * @param[in] state Compiler state
+ * @param[in] state Scanner state
  * @param[in] token
  *
  * @return True if token is valid, false if there are no more tokens left
  */
 bool scan(State &state, sun::Token *t) {
-    // Skip whitespaces
+    // Skip whitespace
     skip_whitespace(state);
-    // Decrease current position on file
-    look_behind(state);
 
     // Get next character on file to scan it
-    char ch = look_ahead(state, 1);
+    char ch = lookahead(state);
 
     // Set line and column where the token was found
     t->line = state.current_ln;
     t->column = state.file_pos;
 
+    advance(state);
+
     switch (ch) {
-        case '\n': // FIXME: we should check for EOF instead, we need to find a way to do this
+        case '\0':
             return false;
         case '+':
             t->type = sun::TokenType::Plus;
@@ -149,10 +145,7 @@ bool scan(State &state, sun::Token *t) {
                 break;
             }
 
-            std::string err_msg = "Unrecognized character '";
-            err_msg.append(1, ch);
-            err_msg.append("' on line " + std::to_string(state.current_ln + 1));
-            sun::logger::err_fatal(err_msg);
+            sun::logger::err_fatal("Unrecognized character '"s + ch + "' on line " + std::to_string(state.current_ln + 1));
     }
 
     return true;

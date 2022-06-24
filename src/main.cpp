@@ -16,7 +16,7 @@
 #include "token.hpp"
 
 static void scan_file(State &state) {
-    struct sun::Token t;
+    sun::Token t;
     std::array<std::string, 5> token_str = { "+", "-", "*", "/", "integer" };
 
     // NOTE: this is for debugging purposes, should be removed later
@@ -59,11 +59,11 @@ int main(int argc, char *argv[]) {
     // Initialize compiler state
     State state = {
         0,                 // current line
-        0,                 // file position
+        -1,                // file position
         sun_file_contents, // source files
         "out.bc",          // TODO: parse '--output' CLI argument
     };
 
     scan_file(state);
-    std::exit(0);
+    return 0;
 }
