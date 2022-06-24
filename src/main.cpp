@@ -13,6 +13,24 @@
 #include "logger.hpp"
 #include "scanner.hpp"
 #include "state.hpp"
+#include "token.hpp"
+
+static void scan_file(State &state) {
+    struct sun::Token t;
+    std::array<std::string, 5> token_str = { "+", "-", "*", "/", "integer" };
+
+    // NOTE: this is for debugging purposes, should be removed later
+    while (scan(state, &t)) {
+        std::string token_kind = token_str[t.type];
+        if (token_kind != "integer") {
+            sun::logger::dbg("Found token '" + token_str[t.type] + "'");
+        } else {
+            sun::logger::dbg("Found token '" + token_kind + "', value " + t.value);
+        }
+    }
+    sun::logger::dbg("Final line value " + std::to_string(state.current_ln));
+    sun::logger::dbg("Final column value " + std::to_string(state.file_pos));
+}
 
 int main(int argc, char *argv[]) {
     // ===== Initialize CLI
@@ -46,7 +64,6 @@ int main(int argc, char *argv[]) {
         "out.bc",          // TODO: parse '--output' CLI argument
     };
 
-    // std::cout << state.sun_source_file << std::endl;
-    scan(state);
+    scan_file(state);
     std::exit(0);
 }

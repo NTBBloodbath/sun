@@ -5,6 +5,7 @@
 // └                                                          ┘
 #include <cctype>
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
 
 #include "logger.hpp"
@@ -40,13 +41,12 @@ static char look_ahead(State &state, unsigned long count) {
 
     // If current position plus count to look ahead
     // is larger than source file then return EOF
-    // sun::logger::dbg(std::to_string(pos + count));
     if (pos + count > source.length()) {
-        // sun::logger::dbg("Reached EOF");
+        // BUG: this seems to be doing nothing, it is returning a newline anyway
         return EOF;
     }
 
-    ch = source[pos];
+    ch = source.at(pos);
     if (ch == '\n')
         state.current_ln += 1;
 
@@ -73,8 +73,36 @@ static void skip_whitespace(State &state) {
     // - carriage return
     // - formfeed
     while (ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f') {
+
         ch = look_ahead(state, 1);
     }
+
+    // Restore current line to its initial value
+    state.current_ln = 0;
+}
+
+/**
+ * @brief Scan a number
+ *
+ * @param[in] state Compiler state
+ * @param[in] ch 
+ * @return A number value
+ *
+ * @private
+ */
+static int scan_number(State &state, int ch) {
+    int curr_int = 0;
+    int value = 0;
+
+    while ('0' <= ch && ch <= '9') {
+        // Convert the current character to its integer value
+        curr_int = ch - '0';
+        value = value * 10 + curr_int;
+        ch = look_ahead(state, 1);
+    }
+
+    look_behind(state);
+    return value;
 }
 
 /**
@@ -82,22 +110,50 @@ static void skip_whitespace(State &state) {
  *
  * @param[in] state Compiler state
  * @param[in] token
+ *
+ * @return True if token is valid, false if there are no more tokens left
  */
-void scan(State &state) {
+bool scan(State &state, sun::Token *t) {
     // Skip whitespaces
     skip_whitespace(state);
     // Decrease current position on file
     look_behind(state);
 
-    // Get next character on file and scan it
+    // Get next character on file to scan it
     char ch = look_ahead(state, 1);
-    switch (ch) {
-        case EOF:
 
+    // Set line and column where the token was found
+    t->line = state.current_ln;
+    t->column = state.file_pos;
+
+    switch (ch) {
+        case '\n': // FIXME: we should check for EOF instead, we need to find a way to do this
+            return false;
+        case '+':
+            t->type = sun::TokenType::Plus;
+            break;
+        case '-':
+            t->type = sun::TokenType::Minus;
+            break;
+        case '*':
+            t->type = sun::TokenType::Times;
+            break;
+        case '/':
+            t->type = sun::TokenType::Slash;
             break;
         default:
             // Scan int literals
             if (std::isdigit(ch)) {
+                t->type = sun::TokenType::Integer;
+                t->value = std::to_string(scan_number(state, ch));
+                break;
             }
+
+            std::string err_msg = "Unrecognized character '";
+            err_msg.append(1, ch);
+            err_msg.append("' on line " + std::to_string(state.current_ln + 1));
+            sun::logger::err_fatal(err_msg);
     }
+
+    return true;
 }

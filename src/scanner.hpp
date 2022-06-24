@@ -5,5 +5,6 @@
 // └                                                          ┘
 #pragma once
 #include "state.hpp"
+#include "token.hpp"
 
-void scan(State &state);
+bool scan(State &state, sun::Token *t);

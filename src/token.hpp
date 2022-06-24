@@ -19,12 +19,13 @@ namespace sun {
      *
      * @enum sun::TokenType
      */
-    enum class TokenType {
-        Plus = 1,
+    enum TokenType {
+        // Eof,
+        Plus,
         Minus,
         Times,
         Slash,
-        Eof,
+        Integer,
     };
 
     /**
